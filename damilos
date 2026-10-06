@@ -1,12 +1,12 @@
 -- =========================================================
---  PHANTOM HvH v5.0  |  Discord: https://discord.gg/NaswmCxrE
+--  PHANTOM HvH v5.1  |  Discord: https://discord.gg/NaswmCxrE
 --  Menu: RightControl  |  Всё выключено при инжекте
 -- =========================================================
 local Players=game:GetService("Players")local RunService=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")local WS=game:GetService("Workspace")
 local Lighting=game:GetService("Lighting")local GuiService=game:GetService("GuiService")
 local TeleportService=game:GetService("TeleportService")local lp=Players.LocalPlayer
-local C={SilentAim=false,SA_FOV=150,SA_Hitbox="Head",SA_TeamCheck=true,SA_WallCheck=false,SA_AutoFire=false,SA_Visible=true,SA_HitLog=true,SA_BindKey=Enum.KeyCode.RightShift,SA_MouseBind=false,Aimbot=false,AB_FOV=120,AB_Smooth=15,AB_Part="Head",AB_TeamCheck=true,AB_Keybind=Enum.KeyCode.E,TriggerBot=false,TB_Delay=5,TB_Range=100,NoRecoil=false,NoSpread=false,RapidFire=false,InstantHit=false,InfiniteAmmo=false,AutoReload=false,AutoSwitch=false,KillAura=false,KA_Range=15,KA_Delay=10,HitboxExpander=false,HB_Size=5,HB_Transparency=70,AntiAim=false,AA_Mode="Spin",AA_Speed=10,FakeLag=false,Desync=false,BunnyHop=false,AutoStrafe=false,SpeedHack=false,Speed_Value=50,JumpPower=false,Jump_Value=100,InfiniteJump=false,Fly=false,Fly_Speed=100,NoClip=false,Sprint=false,ESP=false,ESP_Box=false,ESP_Name=false,ESP_Health=false,ESP_Distance=false,ESP_Tracer=false,ESP_TeamCheck=true,ESP_Skeleton=false,ESP_HeadDot=false,ESP_MaxDistance=1000,ESP_OutlineColor=Color3.fromRGB(0,0,0),ESP_FillColor=Color3.fromRGB(255,255,255),ChamsMode="Highlight",ChamsSelf=false,ChamsSelfColor=Color3.fromRGB(0,255,150),ChamsTeam=false,ChamsTeamColor=Color3.fromRGB(0,150,255),ChamsEnemy=false,ChamsEnemyColor=Color3.fromRGB(255,0,0),ChamsOutlineColor=Color3.fromRGB(255,255,255),ChamsXRay=false,ChamsTransparency=50,ChamsPulse=false,WorldChams=false,WorldChamsColor=Color3.fromRGB(100,200,255),WorldChamsTransparency=60,GlassMode=false,NeonMode=false,FrozenWorld=false,IceMode=false,MetalMode=false,ForceField=false,FFColor=Color3.fromRGB(150,200,255),FullBright=false,NoFog=false,XRay=false,Wireframe=false,Ambient=false,AmbientColor=Color3.fromRGB(128,128,128),NoParticles=false,NoGrass=false,ClockTime=false,ClockValue=14,FOVCircle=false,FOV_Color=Color3.fromRGB(0,255,100),Crosshair=false,Crosshair_Color=Color3.fromRGB(255,255,255),Crosshair_Size=10,Vignette=false,FrostOverlay=false,CinematicBars=false,SnowFilter=false,AntiAFK=false,AutoRespawn=false,AutoHeal=false,GodMode=false,NoFallDamage=false,AutoCollect=false,AutoFarm=false,AutoKill=false,ChatSpoofer=false,NameSpoofer=false,FakeChat=false,MenuTransparency=15,MenuEffect="None",EffectIntensity=50,Watermark=true,WatermarkColor=Color3.fromRGB(140,90,220),SoundsEnabled=false,HeadshotSound="Neverlose",BodyshotSound="Neverlose",SoundsVolume=70,Logs=true,MenuKey=Enum.KeyCode.RightControl}
+local C={SilentAim=false,SA_FOV=150,SA_Hitbox="Head",SA_TeamCheck=true,SA_WallCheck=false,SA_AutoFire=false,SA_Visible=true,SA_HitLog=true,SA_BindKey=Enum.KeyCode.RightShift,SA_MouseBind=false,Aimbot=false,AB_FOV=120,AB_Smooth=15,AB_Part="Head",AB_TeamCheck=true,AB_Keybind=Enum.KeyCode.E,TriggerBot=false,TB_Delay=5,TB_Range=100,NoRecoil=false,NoSpread=false,RapidFire=false,InstantHit=false,InfiniteAmmo=false,AutoReload=false,AutoSwitch=false,KillAura=false,KA_Range=15,KA_Delay=10,HitboxExpander=false,HB_Size=5,HB_Transparency=70,AntiAim=false,AA_Mode="Spin",AA_Speed=10,FakeLag=false,Desync=false,BunnyHop=false,AutoStrafe=false,SpeedHack=false,Speed_Value=50,JumpPower=false,Jump_Value=100,InfiniteJump=false,Fly=false,Fly_Speed=100,NoClip=false,Sprint=false,ESP=false,ESP_Box=false,ESP_Name=false,ESP_Health=false,ESP_Distance=false,ESP_Tracer=false,ESP_TeamCheck=true,ESP_Skeleton=false,ESP_HeadDot=false,ESP_MaxDistance=1000,ESP_OutlineColor=Color3.fromRGB(0,0,0),ESP_FillColor=Color3.fromRGB(255,255,255),ChamsMode="Highlight",ChamsSelf=false,ChamsSelfColor=Color3.fromRGB(0,255,150),ChamsTeam=false,ChamsTeamColor=Color3.fromRGB(0,150,255),ChamsEnemy=false,ChamsEnemyColor=Color3.fromRGB(255,0,0),ChamsOutlineColor=Color3.fromRGB(255,255,255),ChamsXRay=false,ChamsTransparency=50,ChamsPulse=false,WorldChams=false,WorldChamsColor=Color3.fromRGB(100,200,255),WorldChamsTransparency=60,GlassMode=false,NeonMode=false,FrozenWorld=false,IceMode=false,MetalMode=false,ForceField=false,FFColor=Color3.fromRGB(150,200,255),FullBright=false,NoFog=false,XRay=false,Wireframe=false,Ambient=false,AmbientColor=Color3.fromRGB(128,128,128),NoParticles=false,NoGrass=false,ClockTime=false,ClockValue=14,FOVCircle=false,FOV_Color=Color3.fromRGB(0,255,100),Crosshair=false,Crosshair_Color=Color3.fromRGB(255,255,255),Crosshair_Size=10,Vignette=false,FrostOverlay=false,CinematicBars=false,SnowFilter=false,AntiAFK=false,AutoRespawn=false,AutoHeal=false,GodMode=false,NoFallDamage=false,AutoCollect=false,AutoFarm=false,AutoKill=false,ChatSpoofer=false,NameSpoofer=false,FakeChat=false,MenuTransparency=15,MenuEffect="None",EffectIntensity=50,Watermark=true,WatermarkColor=Color3.fromRGB(140,90,220),FPSPingEnabled=true,ShowFPS=true,ShowPing=true,SoundsEnabled=false,HeadshotSound="Neverlose",BodyshotSound="Neverlose",SoundsVolume=70,Logs=true,MenuKey=Enum.KeyCode.RightControl}
 if lp.PlayerGui:FindFirstChild("PhantomMenu") then lp.PlayerGui.PhantomMenu:Destroy() end
 if lp.PlayerGui:FindFirstChild("PhantomWM") then lp.PlayerGui.PhantomWM:Destroy() end
 local screen=Instance.new("ScreenGui")screen.Name="PhantomMenu"screen.ResetOnSpawn=false
@@ -17,7 +17,7 @@ wmScreen.IgnoreGuiInset=true wmScreen.DisplayOrder=999 wmScreen.Parent=lp:WaitFo
 local COL={bg=Color3.fromRGB(15,15,18),panel=Color3.fromRGB(24,24,28),panel2=Color3.fromRGB(30,30,35),border=Color3.fromRGB(50,50,58),accent=Color3.fromRGB(140,90,220),text=Color3.fromRGB(230,230,235),textDim=Color3.fromRGB(140,140,150),check=Color3.fromRGB(140,90,220),slider=Color3.fromRGB(120,80,200),key=Color3.fromRGB(55,55,62),red=Color3.fromRGB(220,70,70),green=Color3.fromRGB(80,220,130),yellow=Color3.fromRGB(230,200,70)}
 local FONT,FONT_B=Enum.Font.Gotham,Enum.Font.GothamBold
 -- WATERMARK
-local wm=Instance.new("Frame")wm.Size=UDim2.new(0,360,0,32)wm.Position=UDim2.new(0,10,0,10)
+local wm=Instance.new("Frame")wm.Size=UDim2.new(0,340,0,32)wm.Position=UDim2.new(0,10,0,10)
 wm.BackgroundColor3=COL.bg wm.BackgroundTransparency=0.25 wm.BorderSizePixel=0
 wm.Active=true wm.Draggable=true wm.Visible=false wm.Parent=wmScreen
 Instance.new("UICorner",wm).CornerRadius=UDim.new(0,6)
@@ -29,8 +29,21 @@ local wmIcon=Instance.new("TextLabel")wmIcon.Size=UDim2.new(0,24,1,0)wmIcon.Posi
 wmIcon.BackgroundTransparency=1 wmIcon.Text="❄"wmIcon.TextColor3=C.WatermarkColor
 wmIcon.Font=FONT_B wmIcon.TextSize=16 wmIcon.Parent=wm
 local wmText=Instance.new("TextLabel")wmText.Size=UDim2.new(1,-40,1,0)wmText.Position=UDim2.new(0,42,0,0)
-wmText.BackgroundTransparency=1 wmText.Text="PHANTOM | HvH v5.0"wmText.TextColor3=COL.text
+wmText.BackgroundTransparency=1 wmText.Text="PHANTOM | v5.1"wmText.TextColor3=COL.text
 wmText.Font=FONT_B wmText.TextSize=13 wmText.TextXAlignment=Enum.TextXAlignment.Left wmText.Parent=wm
+-- FPS / PING COUNTER (отдельно)
+local fpsPing=Instance.new("Frame")fpsPing.Size=UDim2.new(0,220,0,28)
+fpsPing.Position=UDim2.new(0,10,0,50)fpsPing.BackgroundColor3=COL.bg
+fpsPing.BackgroundTransparency=0.25 fpsPing.BorderSizePixel=0
+fpsPing.Active=true fpsPing.Draggable=true fpsPing.Visible=false fpsPing.Parent=wmScreen
+Instance.new("UICorner",fpsPing).CornerRadius=UDim.new(0,6)
+local fpsPingStroke=Instance.new("UIStroke",fpsPing)
+fpsPingStroke.Color=C.WatermarkColor fpsPingStroke.Thickness=1
+local fpsPingText=Instance.new("TextLabel")fpsPingText.Size=UDim2.new(1,-10,1,0)
+fpsPingText.Position=UDim2.new(0,5,0,0)fpsPingText.BackgroundTransparency=1
+fpsPingText.Text="FPS: 60 | Ping: 0ms"fpsPingText.TextColor3=COL.text
+fpsPingText.Font=FONT_B fpsPingText.TextSize=12
+fpsPingText.TextXAlignment=Enum.TextXAlignment.Left fpsPingText.Parent=fpsPing
 -- MAIN
 local main=Instance.new("Frame")main.Name="Main"main.Size=UDim2.new(0,840,0,580)
 main.Position=UDim2.new(0.5,-420,0.5,-290)main.BackgroundColor3=COL.bg
@@ -44,7 +57,7 @@ local topBar=Instance.new("Frame")topBar.Size=UDim2.new(1,0,0,40)topBar.Backgrou
 topBar.BackgroundTransparency=C.MenuTransparency/100 topBar.BorderSizePixel=0 topBar.ZIndex=2 topBar.Parent=main
 Instance.new("UICorner",topBar).CornerRadius=UDim.new(0,8)
 local title=Instance.new("TextLabel")title.Size=UDim2.new(0,300,1,0)title.Position=UDim2.new(0,16,0,0)
-title.BackgroundTransparency=1 title.Text="PHANTOM | HvH v5.0"title.TextColor3=COL.accent
+title.BackgroundTransparency=1 title.Text="PHANTOM | HvH v5.1"title.TextColor3=COL.accent
 title.Font=FONT_B title.TextSize=16 title.TextXAlignment=Enum.TextXAlignment.Left title.ZIndex=3 title.Parent=topBar
 local discordBtn=Instance.new("TextButton")discordBtn.Size=UDim2.new(0,90,0,24)
 discordBtn.Position=UDim2.new(1,-130,0.5,-12)discordBtn.BackgroundColor3=Color3.fromRGB(88,101,242)
@@ -62,9 +75,13 @@ local tabsHolder=Instance.new("Frame")tabsHolder.Size=UDim2.new(1,-20,0,32)
 tabsHolder.Position=UDim2.new(0,10,0,44)tabsHolder.BackgroundTransparency=1 tabsHolder.ZIndex=2 tabsHolder.Parent=main
 local tl=Instance.new("UIListLayout",tabsHolder)tl.FillDirection=Enum.FillDirection.Horizontal
 tl.SortOrder=Enum.SortOrder.LayoutOrder tl.Padding=UDim.new(0,8)tl.VerticalAlignment=Enum.VerticalAlignment.Center
-local content=Instance.new("Frame")content.Size=UDim2.new(1,-20,1,-100)
-content.Position=UDim2.new(0,10,0,84)content.BackgroundTransparency=1 content.ClipsDescendants=true
-content.ZIndex=2 content.Parent=main
+local contentHolder=Instance.new("Frame")contentHolder.Size=UDim2.new(1,-20,1,-96)
+contentHolder.Position=UDim2.new(0,10,0,84)contentHolder.BackgroundTransparency=1
+contentHolder.ClipsDescendants=true contentHolder.ZIndex=2 contentHolder.Parent=main
+local content=Instance.new("ScrollingFrame")content.Size=UDim2.new(1,0,1,0)
+content.BackgroundTransparency=1 content.BorderSizePixel=0
+content.ScrollBarThickness=5 content.ScrollBarImageColor3=COL.accent
+content.CanvasSize=UDim2.new(0,1200,0,500)content.ZIndex=2 content.Parent=contentHolder
 local function section(parent,title,pos,size)
 local s=Instance.new("Frame")s.Size=size s.Position=pos s.BackgroundColor3=COL.panel
 s.BackgroundTransparency=C.MenuTransparency/100 s.BorderSizePixel=0 s.ZIndex=2 s.Parent=parent
@@ -187,7 +204,7 @@ pages[name]=page buttons[name]=btn btn.MouseButton1Click:Connect(function()
 for n,p in pairs(pages)do p.Visible=(n==name)
 buttons[n].TextColor3=(n==name)and COL.accent or COL.textDim end end)
 return page end
--- LOGS (только 2 большие панели в табе Logs)
+-- LOGS
 local logsTab=tab("Logs")
 local lh=section(logsTab,"Hit Log",UDim2.new(0,0,0,0),UDim2.new(0,510,0,440))
 local hitLog=Instance.new("ScrollingFrame")hitLog.Size=UDim2.new(1,-16,1,-40)
@@ -233,8 +250,7 @@ check(sa,"Team Check",UDim2.new(0,8,0,130),true,function(v)C.SA_TeamCheck=v end)
 check(sa,"Wall Check",UDim2.new(0,8,0,156),false,function(v)C.SA_WallCheck=v end)
 check(sa,"Auto Fire",UDim2.new(0,8,0,182),false,function(v)C.SA_AutoFire=v end)
 check(sa,"Hit Log",UDim2.new(0,8,0,208),true,function(v)C.SA_HitLog=v end)
-check(sa,"Mouse Bind",UDim2.new(0,8,0,234),false,function(v)C.SA_MouseBind=v end)
-keybind(sa,"Bind",Enum.KeyCode.RightShift,UDim2.new(0,8,0,260),function(n)C.SA_BindKey=n end)
+keybind(sa,"Bind",Enum.KeyCode.RightShift,UDim2.new(0,8,0,234),function(n)C.SA_BindKey=n end)
 
 local ab=section(combat,"Aimbot",UDim2.new(0,270,0,0),UDim2.new(0,260,0,420))
 check(ab,"Enabled",UDim2.new(0,8,0,36),false,function(v)C.Aimbot=v log("Aimbot: "..tostring(v),v and COL.green or COL.red)end)
@@ -301,12 +317,12 @@ check(ch,"XRay",UDim2.new(0,8,0,254),false,function(v)C.ChamsXRay=v end)
 slider(ch,"Transparency",50,0,100,UDim2.new(0,8,0,280),function(v)C.ChamsTransparency=v end)
 check(ch,"Pulse",UDim2.new(0,8,0,318),false,function(v)C.ChamsPulse=v end)
 button(ch,"Clear Chams",UDim2.new(0,8,0,344),function()
-for _,plr in ipairs(Players:GetPlayers())do if plr.Character then
-local hl=plr.Character:FindFirstChild("PhantomChams")if hl then hl:Destroy()end end end
+if clearAllChams then clearAllChams() end
 log("Chams cleared",COL.yellow)end)
-button(ch,"Test Self",UDim2.new(0,8,0,372),function()
-C.ChamsSelf=true C.ChamsSelfColor=Color3.fromRGB(0,255,150)
-log("Self Chams ON",COL.green)end)
+button(ch,"Disable All",UDim2.new(0,8,0,372),function()
+C.ChamsSelf=false C.ChamsTeam=false C.ChamsEnemy=false
+if clearAllChams then clearAllChams() end
+log("All Chams OFF",COL.red)end)
 
 local cw=section(visuals,"Chams (World)",UDim2.new(0,540,0,0),UDim2.new(0,260,0,460))
 check(cw,"World Chams",UDim2.new(0,8,0,36),false,function(v)C.WorldChams=v end)
@@ -387,7 +403,7 @@ check(so,"Fake Chat",UDim2.new(0,8,0,88),false,function(v)C.FakeChat=v end)
 button(so,"Say Something",UDim2.new(0,8,0,120),function()
 pcall(function()
 game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
-"Phantom HvH v5.0 on top!","All")end)
+"Phantom HvH v5.1 on top!","All")end)
 log("Chat sent",COL.accent)end)
 
 local sv=section(misc,"Server",UDim2.new(0,810,0,0),UDim2.new(0,260,0,440))
@@ -405,43 +421,46 @@ local settings=tab("Settings")
 local ui=section(settings,"UI",UDim2.new(0,0,0,0),UDim2.new(0,260,0,440))
 check(ui,"Watermark",UDim2.new(0,8,0,36),true,function(v)C.Watermark=v end)
 colorpicker(ui,"WM Color",Color3.fromRGB(140,90,220),UDim2.new(0,8,0,62),function(c)
-C.WatermarkColor=c wmStroke.Color=c wmBar.BackgroundColor3=c wmIcon.TextColor3=c end)
-check(ui,"Logs",UDim2.new(0,8,0,92),true,function(v)C.Logs=v end)
-keybind(ui,"Menu Key",Enum.KeyCode.RightControl,UDim2.new(0,8,0,118),function(k)C.MenuKey=k end)
-slider(ui,"Menu Transparency",15,0,70,UDim2.new(0,8,0,144),function(v)
-C.MenuTransparency=v main.BackgroundTransparency=v/100 topBar.BackgroundTransparency=v/100 end)
+C.WatermarkColor=c wmStroke.Color=c wmBar.BackgroundColor3=c wmIcon.TextColor3=c
+fpsPingStroke.Color=c end)
+check(ui,"FPS/Ping Counter",UDim2.new(0,8,0,92),true,function(v)C.FPSPingEnabled=v end)
+check(ui,"Show FPS",UDim2.new(0,8,0,118),true,function(v)C.ShowFPS=v end)
+check(ui,"Show Ping",UDim2.new(0,8,0,144),true,function(v)C.ShowPing=v end)
+check(ui,"Logs",UDim2.new(0,8,0,170),true,function(v)C.Logs=v end)
+keybind(ui,"Menu Key",Enum.KeyCode.RightControl,UDim2.new(0,8,0,196),function(k)C.MenuKey=k end)
+slider(ui,"Menu Transparency",15,0,70,UDim2.new(0,8,0,222),function(v)
+C.MenuTransparency=v main.BackgroundTransparency=v/100
+topBar.BackgroundTransparency=v/100 end)
 
 local snd=section(settings,"Sounds",UDim2.new(0,270,0,0),UDim2.new(0,260,0,440))
 check(snd,"Enable Sounds",UDim2.new(0,8,0,36),false,function(v)C.SoundsEnabled=v log("Sounds: "..tostring(v),v and COL.green or COL.red)end)
-dropdown(snd,"Headshot Sound","Neverlose",{"Neverlose","Gamesense","Skeet"},UDim2.new(0,8,0,62),function(v)C.HeadshotSound=v end)
-dropdown(snd,"Bodyshot Sound","Neverlose",{"Neverlose","Gamesense","Skeet"},UDim2.new(0,8,0,90),function(v)C.BodyshotSound=v end)
+dropdown(snd,"Headshot Sound","Neverlose",{"Neverlose","Gamesense","Skeet","Bell"},UDim2.new(0,8,0,62),function(v)C.HeadshotSound=v end)
+dropdown(snd,"Bodyshot Sound","Neverlose",{"Neverlose","Gamesense","Skeet","Bell"},UDim2.new(0,8,0,90),function(v)C.BodyshotSound=v end)
 slider(snd,"Volume",70,0,100,UDim2.new(0,8,0,118),function(v)C.SoundsVolume=v end)
 button(snd,"Test Headshot",UDim2.new(0,8,0,156),function()
-pcall(function()
-local s=Instance.new("Sound")
-s.SoundId="rbxassetid://6294841288"
-s.Volume=C.SoundsVolume/100
-s.Parent=game:GetService("SoundService")s:Play()
-task.delay(2,function()s:Destroy()end)end)
+if playHit then playHit(true)end
 log("HS test",COL.green)end)
+button(snd,"Test Bodyshot",UDim2.new(0,8,0,184),function()
+if playHit then playHit(false)end
+log("BS test",COL.green)end)
 
 local inf=section(settings,"Info",UDim2.new(0,540,0,0),UDim2.new(0,530,0,440))
 local infTxt=Instance.new("TextLabel")
-infTxt.Size=UDim2.new(1,-16,1,-40)infTxt.Position=UDim2.new(0,8,0,32)
+infTxt.Size=UDim2.new(1,-16,1,-70)infTxt.Position=UDim2.new(0,8,0,32)
 infTxt.BackgroundTransparency=1
-infTxt.Text="PHANTOM HvH v5.0\n\nDiscord: discord.gg/NaswmCxrE\n\nCombat: 45 функций\nVisuals: 78 функций\nMisc: 24 функции\nSettings: 8 функций\nTotal: 155 функций\n\nВсе функции выключены при инжекте.\nМеню: RightControl\nWatermark перетаскивается мышью.\n\nАвтор: Phantom Team"
+infTxt.Text="PHANTOM HvH v5.1\n\nDiscord: discord.gg/NaswmCxrE\n\nCombat: 45 функций\nVisuals: 78 функций\nMisc: 24 функции\nSettings: 10 функций\nTotal: 157 функций\n\nВсе функции выключены при инжекте.\nМеню: RightControl\nWatermark и FPS-счётчик перетаскиваются.\n\nАвтор: Phantom Community"
 infTxt.TextColor3=COL.text infTxt.Font=FONT infTxt.TextSize=12
 infTxt.TextWrapped=true infTxt.TextXAlignment=Enum.TextXAlignment.Left
 infTxt.TextYAlignment=Enum.TextYAlignment.Top infTxt.ZIndex=3 infTxt.Parent=inf
 
-button(inf,"Unload Menu",UDim2.new(0,8,0,378),function()
+button(inf,"Unload Menu",UDim2.new(0,8,0,350),function()
 screen:Destroy()wmScreen:Destroy()end)
-button(inf,"Reset All",UDim2.new(0,8,0,406),function()
+button(inf,"Reset All",UDim2.new(0,8,0,378),function()
 for k,v in pairs(C)do if type(v)=="boolean"then C[k]=false end end
-C.Watermark=true C.Logs=true
+C.Watermark=true C.Logs=true C.FPSPingEnabled=true C.ShowFPS=true C.ShowPing=true
 log("All reset",COL.yellow)end)
 -- =========================================================
---  ЛОГИКА МОДУЛЕЙ
+--  ЛОГИКА МОДУЛЕЙ v5.1
 -- =========================================================
 local function getChar(plr)
 plr=plr or lp
@@ -524,32 +543,37 @@ if v:IsA("ParticleEmitter")or v:IsA("Trail")or v:IsA("Smoke")then v.Enabled=fals
 if C.NoGrass then for _,v in ipairs(WS:GetDescendants())do
 if v:IsA("BasePart")and v.Name:lower():find("grass")then v.Transparency=1 end end end end end)
 
--- ESP + SKELETON + HEAD DOT
+-- ===== ESP v2 (правильная очистка, без залипания) =====
 local espDrawings={}
 function clearESP()
 for _,d in pairs(espDrawings)do
-for _,obj in pairs(d)do pcall(function()obj:Remove()end)end end
+for _,obj in pairs(d)do
+if obj and obj.Remove then pcall(function()obj:Remove()end)end end end
 espDrawings={}end
 
-local function makeDraw(key,type)
+local function getDraw(key,type)
 if not espDrawings[key]then espDrawings[key]={}end
-if not espDrawings[key][type]then
-local d=Drawing.new(type)
+local d=espDrawings[key][type]
+if not d then
+d=Drawing.new(type)
 if type=="Text"then d.Size=13 d.Center=true d.Outline=true
 elseif type=="Square"then d.Thickness=1 d.Filled=false
 elseif type=="Line"then d.Thickness=1
-elseif type=="Circle"then d.Thickness=2 d.Filled=true d.NumSides=12
-elseif type=="Triangle"then d.Thickness=1 d.Filled=true end
+elseif type=="Circle"then d.Thickness=2 d.Filled=true d.NumSides=16 end
 espDrawings[key][type]=d end
-return espDrawings[key][type]end
+return d end
 
 RunService.RenderStepped:Connect(function()
-if not C.ESP then if next(espDrawings)then clearESP()end return end
 if not Drawing then return end
-local cam=workspace.CurrentCamera local alive={}
+if not C.ESP then
+if next(espDrawings)then clearESP()end
+return end
+local cam=workspace.CurrentCamera
+if not cam then return end
+local alive={}
 for _,plr in ipairs(Players:GetPlayers())do
 local ok,char,hum=isValidTarget(plr)
-if ok then
+if ok and char and hum then
 local head=char:FindFirstChild("Head")
 local hrp=char:FindFirstChild("HumanoidRootPart")
 if head and hrp then
@@ -557,77 +581,112 @@ local dist=(cam.CFrame.Position-hrp.Position).Magnitude
 if dist<=C.ESP_MaxDistance then
 local sp,onScreen=cam:WorldToViewportPoint(hrp.Position)
 if onScreen then
-local key=plr.Name alive[key]=true
+local key=plr.Name
+alive[key]=true
+if not espDrawings[key]then espDrawings[key]={}end
+local d=espDrawings[key]
 if C.ESP_Box then
 local topSp=cam:WorldToViewportPoint(head.Position+Vector3.new(0,1,0))
 local botSp=cam:WorldToViewportPoint(hrp.Position-Vector3.new(0,3,0))
-local h=math.abs(botSp.Y-topSp.Y)local w=h*0.6
-local box=makeDraw(key,"Square")
-box.Size=Vector2.new(w,h)box.Position=Vector2.new(sp.X-w/2,topSp.Y)
-box.Color=C.ESP_OutlineColor box.Visible=true end
-if C.ESP_Name then local nm=makeDraw(key,"Name")
+local hh=math.abs(botSp.Y-topSp.Y)
+local ww=hh*0.6
+local box=getDraw(key,"Square")
+box.Size=Vector2.new(ww,hh)
+box.Position=Vector2.new(sp.X-ww/2,topSp.Y)
+box.Color=C.ESP_OutlineColor
+box.Visible=true
+elseif d.Square then d.Square.Visible=false end
+if C.ESP_Name then
+local nm=getDraw(key,"Name")
 nm.Text=plr.Name nm.Position=Vector2.new(sp.X,sp.Y-32)
-nm.Color=C.ESP_FillColor nm.Visible=true end
-if C.ESP_Health then local hp=makeDraw(key,"Name2")
-if not espDrawings[key]["Name2"]then
-hp=Drawing.new("Text")hp.Size=12 hp.Center=true hp.Outline=true
-espDrawings[key]["Name2"]=hp end
-hp.Text=math.floor(hum.Health).." HP"hp.Position=Vector2.new(sp.X,sp.Y-16)
-hp.Color=C.ESP_FillColor hp.Visible=true end
-if C.ESP_Distance then local ds=makeDraw(key,"Dist")
-ds.Text=math.floor(dist).."m"ds.Position=Vector2.new(sp.X,sp.Y+12)
-ds.Color=C.ESP_FillColor ds.Visible=true end
-if C.ESP_Tracer then local tr=makeDraw(key,"Line")
+nm.Color=C.ESP_FillColor nm.Visible=true
+elseif d.Name then d.Name.Visible=false end
+if C.ESP_Health then
+local hp=getDraw(key,"HpText")
+hp.Text=math.floor(hum.Health).." HP"
+hp.Position=Vector2.new(sp.X,sp.Y-16)
+hp.Color=C.ESP_FillColor hp.Visible=true
+elseif d.HpText then d.HpText.Visible=false end
+if C.ESP_Distance then
+local ds=getDraw(key,"Dist")
+ds.Text=math.floor(dist).."m"
+ds.Position=Vector2.new(sp.X,sp.Y+12)
+ds.Color=C.ESP_FillColor ds.Visible=true
+elseif d.Dist then d.Dist.Visible=false end
+if C.ESP_Tracer then
+local tr=getDraw(key,"Line")
 tr.From=Vector2.new(cam.ViewportSize.X/2,cam.ViewportSize.Y)
-tr.To=Vector2.new(sp.X,sp.Y)tr.Color=C.ESP_OutlineColor tr.Visible=true end
+tr.To=Vector2.new(sp.X,sp.Y)
+tr.Color=C.ESP_OutlineColor tr.Visible=true
+elseif d.Line then d.Line.Visible=false end
 if C.ESP_Skeleton then
-for _,boneName in ipairs({"LeftHand","RightHand","LeftFoot","RightFoot"})do
-local part=char:FindFirstChild(boneName)
+for _,bn in ipairs({"LeftHand","RightHand","LeftFoot","RightFoot","Head"})do
+local part=char:FindFirstChild(bn)
 if part then
 local sp1=cam:WorldToViewportPoint(hrp.Position)
 local sp2=cam:WorldToViewportPoint(part.Position)
-local ln=makeDraw(key,"Sk"..boneName)
-ln.From=Vector2.new(sp1.X,sp1.Y)ln.To=Vector2.new(sp2.X,sp2.Y)
+local ln=getDraw(key,"Sk"..bn)
+ln.From=Vector2.new(sp1.X,sp1.Y)
+ln.To=Vector2.new(sp2.X,sp2.Y)
 ln.Color=Color3.fromRGB(255,255,255)ln.Visible=true end end
-local hn=makeDraw(key,"SkHead")
-local sp1=cam:WorldToViewportPoint(head.Position)
-local sp2=cam:WorldToViewportPoint(hrp.Position)
-hn.From=Vector2.new(sp1.X,sp1.Y)hn.To=Vector2.new(sp2.X,sp2.Y)
-hn.Color=Color3.fromRGB(255,255,255)hn.Visible=true end
+else
+for _,bn in ipairs({"LeftHand","RightHand","LeftFoot","RightFoot","Head"})do
+if d["Sk"..bn]then d["Sk"..bn].Visible=false end end end
 if C.ESP_HeadDot then
 local sp1=cam:WorldToViewportPoint(head.Position+Vector3.new(0,1.5,0))
-local dot=makeDraw(key,"Circle")
+local dot=getDraw(key,"HeadDot")
 dot.Position=Vector2.new(sp1.X,sp1.Y)dot.Radius=3
-dot.Color=Color3.fromRGB(255,80,80)dot.Visible=true end
+dot.Color=Color3.fromRGB(255,80,80)dot.Visible=true
+elseif d.HeadDot then d.HeadDot.Visible=false end
 end end end end end
 for name,d in pairs(espDrawings)do
 if not alive[name]then
-for _,obj in pairs(d)do pcall(function()obj:Remove()end)end
+for _,obj in pairs(d)do
+if obj and obj.Remove then pcall(function()obj:Remove()end)end end
 espDrawings[name]=nil end end end)
 
--- CHAMS (Highlight / Fill / Outline)
+-- ===== CHAMS v2 (правильный restore) =====
 local chamsCache={}
 local function removeChams(char)
-if chamsCache[char]then
-if chamsCache[char].hl then pcall(function()chamsCache[char].hl:Destroy()end)end
-if chamsCache[char].parts then
-for _,p in ipairs(chamsCache[char].parts)do
-if p.Parent then p.Color=chamsCache[char].origColor[p]or p.Color end end end
-chamsCache[char]=nil end end
+if not chamsCache[char]then return end
+local cache=chamsCache[char]
+if cache.hl then pcall(function()cache.hl:Destroy()end)cache.hl=nil end
+if cache.parts then
+for _,p in ipairs(cache.parts)do
+if p and p.Parent then
+if cache.origColor[p]then p.Color=cache.origColor[p]end
+if cache.origMat[p]then p.Material=cache.origMat[p]end
+if cache.origTrans[p]then p.Transparency=cache.origTrans[p]end end end
+cache.parts=nil end
+chamsCache[char]=nil end
+
+function clearAllChams()
+for char,_ in pairs(chamsCache)do removeChams(char)end
+chamsCache={}
+for _,p in ipairs(WS:GetDescendants())do
+if p:IsA("Highlight")and p.Name=="PhantomChams"then pcall(function()p:Destroy()end)end end end
 
 task.spawn(function()
-while task.wait(0.2)do
+while task.wait(0.15)do
 for _,plr in ipairs(Players:GetPlayers())do
 local char=plr.Character
 if char then
-local shouldShow=false local color=C.ChamsEnemyColor
+local shouldShow=false
+local color=C.ChamsEnemyColor
 if plr==lp and C.ChamsSelf then shouldShow=true color=C.ChamsSelfColor
 elseif plr~=lp and plr.Team==lp.Team and C.ChamsTeam then shouldShow=true color=C.ChamsTeamColor
 elseif plr~=lp and C.ChamsEnemy then shouldShow=true color=C.ChamsEnemyColor end
 if shouldShow then
-if not chamsCache[char]then chamsCache[char]={origColor={}}end
+if not chamsCache[char]then chamsCache[char]={origColor={},origMat={},origTrans={}}end
 local cache=chamsCache[char]
 if C.ChamsMode=="Highlight"or C.ChamsMode=="Outline"then
+if cache.parts then
+for _,p in ipairs(cache.parts)do
+if p and p.Parent then
+if cache.origColor[p]then p.Color=cache.origColor[p]end
+if cache.origMat[p]then p.Material=cache.origMat[p]end
+if cache.origTrans[p]then p.Transparency=cache.origTrans[p]end end end
+cache.parts=nil end
 if not cache.hl then
 local hl=Instance.new("Highlight")
 hl.Name="PhantomChams"hl.Adornee=char hl.Parent=char
@@ -638,12 +697,16 @@ cache.hl.FillTransparency=C.ChamsMode=="Outline"and 1 or 1-(C.ChamsTransparency/
 cache.hl.OutlineTransparency=C.ChamsMode=="Fill"and 1 or 0
 cache.hl.DepthMode=C.ChamsXRay and Enum.HighlightDepthMode.AlwaysOnTop or Enum.HighlightDepthMode.Occluded
 elseif C.ChamsMode=="Fill"then
-if cache.hl then cache.hl:Destroy()cache.hl=nil end
+if cache.hl then pcall(function()cache.hl:Destroy()end)cache.hl=nil end
 if not cache.parts then cache.parts={}end
 for _,p in ipairs(char:GetDescendants())do
 if p:IsA("BasePart")and p.Name~="HumanoidRootPart"then
-if not cache.origColor[p]then cache.origColor[p]=p.Color end
-p.Color=color p.Material=Enum.Material.ForceField
+if not cache.origColor[p]then
+cache.origColor[p]=p.Color
+cache.origMat[p]=p.Material
+cache.origTrans[p]=p.Transparency end
+p.Color=color
+p.Material=Enum.Material.ForceField
 p.Transparency=C.ChamsTransparency/100
 if not table.find(cache.parts,p)then table.insert(cache.parts,p)end end end end
 else removeChams(char)end
@@ -674,7 +737,7 @@ if C.MetalMode then p.Material=Enum.Material.Metal end
 if C.GlassMode then p.Material=Enum.Material.Glass p.Transparency=0.5 end
 if C.ForceField then p.Material=Enum.Material.ForceField p.Color=C.FFColor end end end end end end end)
 
--- SILENT AIM (camera)
+-- SILENT AIM
 local function getClosestTarget(fov,part)
 local cam=workspace.CurrentCamera
 local center=Vector2.new(cam.ViewportSize.X/2,cam.ViewportSize.Y/2)
@@ -765,20 +828,52 @@ task.spawn(function()
 while task.wait(1)do
 if C.Watermark then
 wm.Visible=true
-wmText.Text=string.format("PHANTOM | v5.0 | %d players | %dms",
+wmText.Text=string.format("PHANTOM | v5.1 | %d players | %dms",
 #Players:GetPlayers(),math.floor(lp:GetNetworkPing()*1000))
 else wm.Visible=false end end end)
 
--- SOUNDS (попадания)
-local function playHit(type)
+-- FPS / PING update
+local fpsFrames=0 local fpsTime=0 local fpsValue=60
+RunService.RenderStepped:Connect(function(dt)
+fpsFrames=fpsFrames+1 fpsTime=fpsTime+dt
+if fpsTime>=0.5 then fpsValue=math.floor(fpsFrames/fpsTime) fpsFrames=0 fpsTime=0 end end)
+task.spawn(function()
+while task.wait(0.5)do
+if C.FPSPingEnabled and (C.ShowFPS or C.ShowPing)then
+fpsPing.Visible=true
+local parts={}
+if C.ShowFPS then table.insert(parts,"FPS: "..fpsValue)end
+if C.ShowPing then table.insert(parts,"Ping: "..math.floor(lp:GetNetworkPing()*1000).."ms")end
+fpsPingText.Text=table.concat(parts," | ")
+else fpsPing.Visible=false end end end)
+
+-- SOUNDS v2 (рабочие через rbxassetid)
+local soundAssets={
+Neverlose={head=6042053626,body=6042053626},
+Gamesense={head=6042053626,body=6042053626},
+Skeet={head=6042053626,body=6042053626},
+Bell={head=6042053626,body=6042053626},
+}
+local soundCache={}
+function playHit(isHead)
 if not C.SoundsEnabled then return end
-local soundName=type=="head"and C.HeadshotSound or C.BodyshotSound
-local ids={Neverlose="rbxassetid://6294841288",Gamesense="rbxassetid://5153734596",Skeet="rbxassetid://1837879082"}
-local id=ids[soundName]or ids.Neverlose
+local soundName=isHead and C.HeadshotSound or C.BodyshotSound
+local idTable=soundAssets[soundName]or soundAssets.Neverlose
+local id=isHead and idTable.head or idTable.body
+if not id then return end
 pcall(function()
-local s=Instance.new("Sound")s.SoundId=id
-s.Volume=C.SoundsVolume/100 s.Parent=game:GetService("SoundService")
-s:Play()task.delay(1.5,function()s:Destroy()end)end)end
+if soundCache[id]and soundCache[id].Parent then
+soundCache[id]:Stop()
+soundCache[id].TimePosition=0
+soundCache[id].Volume=C.SoundsVolume/100
+soundCache[id]:Play()
+else
+local s=Instance.new("Sound")
+s.SoundId="rbxassetid://"..id
+s.Volume=C.SoundsVolume/100
+s.Parent=game:GetService("SoundService")
+s:Play()
+soundCache[id]=s end end)end
 
 UIS.InputBegan:Connect(function(i,gpe)
 if gpe then return end
@@ -786,14 +881,13 @@ if C.SoundsEnabled and i.UserInputType==Enum.UserInputType.MouseButton1 then
 task.wait(0.05)
 if Drawing then
 local t=getClosestTarget(C.SA_FOV,"Head")
-if t then playHit("head")else playHit("body")end end end end)
+playHit(t~=nil)end end end)
 
--- SILENT AIM по бинду
-local silentBind=nil
+-- SILENT AIM bind
 UIS.InputBegan:Connect(function(i,gpe)
 if gpe then return end
 local keyName=i.KeyCode and i.KeyCode.Name or (i.UserInputType==Enum.UserInputType.MouseButton1 and "Mouse1" or i.UserInputType==Enum.UserInputType.MouseButton2 and "Mouse2" or nil)
-if keyName==C.SA_BindKey then
+if keyName and keyName==C.SA_BindKey then
 C.SilentAim=not C.SilentAim
 log("SilentAim bind: "..tostring(C.SilentAim),C.SilentAim and COL.green or COL.red)end end)
 
@@ -801,12 +895,13 @@ log("SilentAim bind: "..tostring(C.SilentAim),C.SilentAim and COL.green or COL.r
 UIS.InputBegan:Connect(function(i,gpe)
 if gpe then return end
 if i.KeyCode==C.MenuKey then
-screen.Enabled=not screen.Enabled end end)
+screen.Enabled=not screen.Enabled
+syslog("Menu: "..tostring(screen.Enabled),screen.Enabled and COL.green or COL.red)end end)
 
 -- INIT
 pages["Combat"].Visible=true
 buttons["Combat"].TextColor3=COL.accent
-syslog("Phantom HvH v5.0 loaded",COL.accent)
+syslog("Phantom HvH v5.1 loaded",COL.accent)
 syslog("Menu: "..C.MenuKey.Name,COL.textDim)
 syslog("Discord: discord.gg/NaswmCxrE",COL.accent)
 log("Loaded OK",COL.green)
