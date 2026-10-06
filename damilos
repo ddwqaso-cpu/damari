@@ -1,4 +1,4 @@
--- PHANTOM HvH v5.2 | discord.gg/NaswmCxrE | Menu: RightControl
+-- PHANTOM HvH v5.3 | discord.gg/NaswmCxrE | Menu: RightControl
 local Players=game:GetService("Players")local RunService=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")local WS=game:GetService("Workspace")
 local Lighting=game:GetService("Lighting")local GuiService=game:GetService("GuiService")
@@ -13,7 +13,7 @@ local wmScreen=Instance.new("ScreenGui")wmScreen.Name="PhantomWM"wmScreen.ResetO
 wmScreen.IgnoreGuiInset=true wmScreen.DisplayOrder=999 wmScreen.Parent=lp:WaitForChild("PlayerGui")
 local COL={bg=Color3.fromRGB(15,15,18),panel=Color3.fromRGB(24,24,28),panel2=Color3.fromRGB(30,30,35),border=Color3.fromRGB(50,50,58),accent=Color3.fromRGB(140,90,220),text=Color3.fromRGB(230,230,235),textDim=Color3.fromRGB(140,140,150),check=Color3.fromRGB(140,90,220),slider=Color3.fromRGB(120,80,200),key=Color3.fromRGB(55,55,62),red=Color3.fromRGB(220,70,70),green=Color3.fromRGB(80,220,130),yellow=Color3.fromRGB(230,200,70)}
 local FONT,FONT_B=Enum.Font.Gotham,Enum.Font.GothamBold
--- WATERMARK + FPS/PING в одном фрейме
+-- WATERMARK
 local wm=Instance.new("Frame")wm.Size=UDim2.new(0,420,0,54)wm.Position=UDim2.new(0,10,0,10)
 wm.BackgroundColor3=COL.bg wm.BackgroundTransparency=0.25 wm.BorderSizePixel=0
 wm.Active=true wm.Draggable=true wm.Visible=false wm.Parent=wmScreen
@@ -26,7 +26,7 @@ local wmIcon=Instance.new("TextLabel")wmIcon.Size=UDim2.new(0,24,0,26)wmIcon.Pos
 wmIcon.BackgroundTransparency=1 wmIcon.Text="❄"wmIcon.TextColor3=C.WatermarkColor
 wmIcon.Font=FONT_B wmIcon.TextSize=16 wmIcon.Parent=wm
 local wmTitle=Instance.new("TextLabel")wmTitle.Size=UDim2.new(1,-40,0,16)wmTitle.Position=UDim2.new(0,42,0,2)
-wmTitle.BackgroundTransparency=1 wmTitle.Text="PHANTOM | v5.2"wmTitle.TextColor3=COL.text
+wmTitle.BackgroundTransparency=1 wmTitle.Text="PHANTOM | v5.3"wmTitle.TextColor3=COL.text
 wmTitle.Font=FONT_B wmTitle.TextSize=13 wmTitle.TextXAlignment=Enum.TextXAlignment.Left wmTitle.Parent=wm
 local wmStats=Instance.new("TextLabel")wmStats.Size=UDim2.new(1,-40,0,14)wmStats.Position=UDim2.new(0,42,0,20)
 wmStats.BackgroundTransparency=1 wmStats.Text="FPS: 60 | Ping: 0ms | Players: 0"
@@ -36,7 +36,7 @@ local wmDiscord=Instance.new("TextLabel")wmDiscord.Size=UDim2.new(1,-40,0,14)wmD
 wmDiscord.BackgroundTransparency=1 wmDiscord.Text="Discord: discord.gg/NaswmCxrE"
 wmDiscord.TextColor3=COL.accent wmDiscord.Font=FONT wmDiscord.TextSize=10
 wmDiscord.TextXAlignment=Enum.TextXAlignment.Left wmDiscord.Parent=wm
--- MAIN MENU
+-- MAIN
 local main=Instance.new("Frame")main.Name="Main"main.Size=UDim2.new(0,860,0,600)
 main.Position=UDim2.new(0.5,-430,0.5,-300)main.BackgroundColor3=COL.bg
 main.BackgroundTransparency=C.MenuTransparency/100 main.BorderSizePixel=0
@@ -47,7 +47,7 @@ local topBar=Instance.new("Frame")topBar.Size=UDim2.new(1,0,0,40)topBar.Backgrou
 topBar.BackgroundTransparency=C.MenuTransparency/100 topBar.BorderSizePixel=0 topBar.ZIndex=2 topBar.Parent=main
 Instance.new("UICorner",topBar).CornerRadius=UDim.new(0,8)
 local title=Instance.new("TextLabel")title.Size=UDim2.new(0,340,1,0)title.Position=UDim2.new(0,16,0,0)
-title.BackgroundTransparency=1 title.Text="PHANTOM | HvH v5.2"title.TextColor3=COL.accent
+title.BackgroundTransparency=1 title.Text="PHANTOM | HvH v5.3"title.TextColor3=COL.accent
 title.Font=FONT_B title.TextSize=16 title.TextXAlignment=Enum.TextXAlignment.Left title.ZIndex=3 title.Parent=topBar
 local discordBtn=Instance.new("TextButton")discordBtn.Size=UDim2.new(0,90,0,24)
 discordBtn.Position=UDim2.new(1,-130,0.5,-12)discordBtn.BackgroundColor3=Color3.fromRGB(88,101,242)
@@ -164,7 +164,7 @@ ob.TextXAlignment=Enum.TextXAlignment.Left ob.ZIndex=21 ob.Parent=list
 ob.MouseButton1Click:Connect(function()dd.Text=opt.."  ▾"if cb then cb(opt)end
 list:Destroy()open=false end)end
 else if list then list:Destroy()end open=false end end)return h end
--- HSV ColorPicker
+-- COLORPICKER — отдельное окно РЯДОМ с меню
 local function colorpicker(parent,label,value,pos,cb)
 local h=Instance.new("Frame")h.Size=UDim2.new(1,-16,0,24)h.Position=pos
 h.BackgroundTransparency=1 h.ZIndex=3 h.Parent=parent
@@ -178,45 +178,57 @@ local pickerOpen=false local picker
 sw.MouseButton1Click:Connect(function()
 pickerOpen=not pickerOpen
 if pickerOpen then
-picker=Instance.new("Frame")picker.Size=UDim2.new(0,180,0,140)
-picker.Position=UDim2.new(0,sw.AbsolutePosition.X-h.AbsolutePosition.X-120,0,sw.AbsolutePosition.Y-h.AbsolutePosition.Y+24)
-picker.BackgroundColor3=COL.panel2 picker.BorderSizePixel=0 picker.ZIndex=30 picker.Parent=h
-Instance.new("UICorner",picker).CornerRadius=UDim.new(0,4)
-local ps=Instance.new("UIStroke",picker)ps.Color=COL.border ps.Thickness=1
+picker=Instance.new("Frame")
+picker.Size=UDim2.new(0,200,0,170)
+-- ПОЗИЦИЯ: справа от меню main
+picker.Position=UDim2.new(0,main.AbsolutePosition.X+main.AbsoluteSize.X+10,0,main.AbsolutePosition.Y)
+picker.BackgroundColor3=COL.panel picker.BorderSizePixel=0
+picker.ZIndex=100 picker.Parent=screen
+Instance.new("UICorner",picker).CornerRadius=UDim.new(0,6)
+local ps=Instance.new("UIStroke",picker)ps.Color=COL.accent ps.Thickness=1
+local pTitle=Instance.new("TextLabel")pTitle.Size=UDim2.new(1,-16,0,22)
+pTitle.Position=UDim2.new(0,8,0,4)pTitle.BackgroundTransparency=1
+pTitle.Text=label pTitle.TextColor3=COL.accent pTitle.Font=FONT_B pTitle.TextSize=12
+pTitle.TextXAlignment=Enum.TextXAlignment.Left pTitle.ZIndex=101 pTitle.Parent=picker
 local hsv={value:ToHSV()}
 local function mkSlider(y,label2,val,cb2)
-local row=Instance.new("Frame")row.Size=UDim2.new(1,-12,0,32)row.Position=UDim2.new(0,6,0,y)
-row.BackgroundTransparency=1 row.ZIndex=31 row.Parent=picker
-local l=Instance.new("TextLabel")l.Size=UDim2.new(0.3,0,0,12)l.BackgroundTransparency=1
-l.Text=label2 l.TextColor3=COL.text l.Font=FONT l.TextSize=10 l.ZIndex=31 l.Parent=row
-local bar=Instance.new("Frame")bar.Size=UDim2.new(1,0,0,6)bar.Position=UDim2.new(0,0,0,16)
-bar.BackgroundColor3=Color3.fromRGB(40,40,44)bar.BorderSizePixel=0 bar.ZIndex=31 bar.Parent=row
+local row=Instance.new("Frame")row.Size=UDim2.new(1,-16,0,32)row.Position=UDim2.new(0,8,0,y)
+row.BackgroundTransparency=1 row.ZIndex=101 row.Parent=picker
+local l=Instance.new("TextLabel")l.Size=UDim2.new(0.15,0,0,12)l.BackgroundTransparency=1
+l.Text=label2 l.TextColor3=COL.text l.Font=FONT l.TextSize=10 l.ZIndex=101 l.Parent=row
+local val2=Instance.new("TextLabel")val2.Size=UDim2.new(0.85,0,0,12)val2.Position=UDim2.new(0.15,0,0,0)
+val2.BackgroundTransparency=1 val2.Text=tostring(math.floor(val*100)/100)
+val2.TextColor3=COL.textDim val2.Font=FONT val2.TextSize=10
+val2.TextXAlignment=Enum.TextXAlignment.Right val2.ZIndex=101 val2.Parent=row
+local bar=Instance.new("Frame")bar.Size=UDim2.new(1,0,0,6)bar.Position=UDim2.new(0,0,0,18)
+bar.BackgroundColor3=Color3.fromRGB(40,40,44)bar.BorderSizePixel=0 bar.ZIndex=101 bar.Parent=row
 Instance.new("UICorner",bar).CornerRadius=UDim.new(1,0)
 local fill=Instance.new("Frame")fill.Size=UDim2.new(val,0,1,0)
-fill.BackgroundColor3=COL.slider fill.BorderSizePixel=0 fill.ZIndex=31 fill.Parent=bar
+fill.BackgroundColor3=COL.slider fill.BorderSizePixel=0 fill.ZIndex=101 fill.Parent=bar
 Instance.new("UICorner",fill).CornerRadius=UDim.new(1,0)
 local drag=false local bt=Instance.new("TextButton")bt.Size=UDim2.new(1,0,1,0)
-bt.BackgroundTransparency=1 bt.Text=""bt.ZIndex=32 bt.Parent=bar
+bt.BackgroundTransparency=1 bt.Text=""bt.ZIndex=102 bt.Parent=bar
 local function u(i)local r=math.clamp((i.Position.X-bar.AbsolutePosition.X)/bar.AbsoluteSize.X,0,1)
-fill.Size=UDim2.new(r,0,1,0)cb2(r)end
+fill.Size=UDim2.new(r,0,1,0)val2.Text=tostring(math.floor(r*100)/100)
+cb2(r)end
 bt.InputBegan:Connect(function(i)if i.UserInputType==Enum.UserInputType.MouseButton1 then drag=true u(i)end end)
 UIS.InputChanged:Connect(function(i)if drag and i.UserInputType==Enum.UserInputType.MouseMovement then u(i)end end)
 UIS.InputEnded:Connect(function(i)if i.UserInputType==Enum.UserInputType.MouseButton1 then drag=false end end)
 end
-mkSlider(4,"H",hsv[1],function(r)
+mkSlider(34,"H",hsv[1],function(r)
 hsv[1]=r local c=Color3.fromHSV(hsv[1],hsv[2],hsv[3])
 sw.BackgroundColor3=c if cb then cb(c)end end)
-mkSlider(40,"S",hsv[2],function(r)
+mkSlider(70,"S",hsv[2],function(r)
 hsv[2]=r local c=Color3.fromHSV(hsv[1],hsv[2],hsv[3])
 sw.BackgroundColor3=c if cb then cb(c)end end)
-mkSlider(76,"V",hsv[3],function(r)
+mkSlider(106,"V",hsv[3],function(r)
 hsv[3]=r local c=Color3.fromHSV(hsv[1],hsv[2],hsv[3])
 sw.BackgroundColor3=c if cb then cb(c)end end)
 local closePick=Instance.new("TextButton")
-closePick.Size=UDim2.new(1,-12,0,22)closePick.Position=UDim2.new(0,6,0,112)
+closePick.Size=UDim2.new(1,-16,0,22)closePick.Position=UDim2.new(0,8,0,142)
 closePick.BackgroundColor3=COL.key closePick.BorderSizePixel=0
 closePick.Text="Close"closePick.TextColor3=COL.text closePick.Font=FONT closePick.TextSize=11
-closePick.ZIndex=31 closePick.Parent=picker
+closePick.ZIndex=101 closePick.Parent=picker
 Instance.new("UICorner",closePick).CornerRadius=UDim.new(0,3)
 closePick.MouseButton1Click:Connect(function()
 picker:Destroy()pickerOpen=false end)
@@ -368,7 +380,7 @@ check(cw,"Force Field",UDim2.new(0,8,0,258),false,function(v)C.ForceField=v end)
 colorpicker(cw,"FF Color",Color3.fromRGB(150,200,255),UDim2.new(0,8,0,284),function(c)C.FFColor=c end)
 button(cw,"Reset World",UDim2.new(0,8,0,312),function()
 C.WorldChams=false C.FrozenWorld=false C.IceMode=false C.NeonMode=false C.MetalMode=false C.GlassMode=false C.ForceField=false
-log("World reset",COL.yellow)end)
+if resetWorld then resetWorld()end log("World reset",COL.yellow)end)
 
 local wr=section(visuals,"World (Lighting)",UDim2.new(0,810,0,0),UDim2.new(0,260,0,460))
 check(wr,"Full Bright",UDim2.new(0,8,0,36),false,function(v)C.FullBright=v end)
@@ -384,10 +396,11 @@ slider(wr,"Clock Value",14,0,24,UDim2.new(0,8,0,272),function(v)C.ClockValue=v e
 button(wr,"Reset Lighting",UDim2.new(0,8,0,310),function()
 C.FullBright=false C.NoFog=false C.XRay=false C.Wireframe=false
 C.Ambient=false C.NoParticles=false C.NoGrass=false C.ClockTime=false
-Lighting.FogEnd=100000 Lighting.Brightness=1
+Lighting.FogEnd=100000 Lighting.Brightness=1 Lighting.ClockTime=14
+Lighting.Ambient=Color3.fromRGB(70,70,70)Lighting.OutdoorAmbient=Color3.fromRGB(70,70,70)
 log("Lighting reset",COL.yellow)end)
 
-local sc=section(visuals,"Screen",UDim2.new(0,1080,0,0),UDim2.new(0,260,0,460))
+local sc=section(visuals,"Screen",UDim2.new(0,1080,0,0),UDim2.new(0,220,0,420))
 check(sc,"FOV Circle",UDim2.new(0,8,0,36),false,function(v)C.FOVCircle=v end)
 colorpicker(sc,"FOV Color",Color3.fromRGB(0,255,100),UDim2.new(0,8,0,62),function(c)C.FOV_Color=c end)
 check(sc,"Crosshair",UDim2.new(0,8,0,90),false,function(v)C.Crosshair=v end)
@@ -432,7 +445,7 @@ check(so,"Fake Chat",UDim2.new(0,8,0,88),false,function(v)C.FakeChat=v end)
 button(so,"Say Something",UDim2.new(0,8,0,120),function()
 pcall(function()
 game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
-"Phantom HvH v5.2 on top!","All")end)
+"Phantom HvH v5.3 on top!","All")end)
 log("Chat sent",COL.accent)end)
 
 local sv=section(misc,"Server",UDim2.new(0,810,0,0),UDim2.new(0,260,0,440))
@@ -450,7 +463,7 @@ local inf=section(settings,"Info",UDim2.new(0,0,0,0),UDim2.new(0,260,0,440))
 local infTxt=Instance.new("TextLabel")
 infTxt.Size=UDim2.new(1,-16,1,-70)infTxt.Position=UDim2.new(0,8,0,32)
 infTxt.BackgroundTransparency=1
-infTxt.Text="PHANTOM HvH v5.2\n\nDiscord: discord.gg/NaswmCxrE\n\nCombat: 45 функций\nVisuals: 78 функций\nMisc: 24 функции\nSettings: 10 функций\nTotal: 157 функций\n\nВсе функции выключены при инжекте.\nМеню: RightControl\nWatermark+FPS перетаскиваются.\n\nАвтор: Phantom Community"
+infTxt.Text="PHANTOM HvH v5.3\n\nDiscord: discord.gg/NaswmCxrE\n\nCombat: 45 функций\nVisuals: 78 функций\nMisc: 24 функции\nSettings: 10 функций\nTotal: 157 функций\n\nВсе функции выключены при инжекте.\nМеню: RightControl\nWatermark+FPS перетаскиваются.\n\nАвтор: Phantom Community"
 infTxt.TextColor3=COL.text infTxt.Font=FONT infTxt.TextSize=12
 infTxt.TextWrapped=true infTxt.TextXAlignment=Enum.TextXAlignment.Left
 infTxt.TextYAlignment=Enum.TextYAlignment.Top infTxt.ZIndex=3 infTxt.Parent=inf
@@ -480,7 +493,7 @@ button(snd,"Test Bodyshot",UDim2.new(0,8,0,184),function()
 if playHit then playHit(false)end log("BS test",COL.green)end)
 
 -- =========================================================
---  ЛОГИКА
+--  ЛОГИКА v5.3
 -- =========================================================
 local function getChar(plr)
 plr=plr or lp
@@ -501,14 +514,17 @@ end
 task.spawn(function()
 local vu=game:GetService("VirtualUser")
 while task.wait(60)do
-if C.AntiAFK then pcall(function()vu:CaptureController()vu:ClickButton2(Vector2.new())end)
-syslog("Anti-AFK",COL.textDim)end end end)
+if C.AntiAFK then pcall(function()vu:CaptureController()vu:ClickButton2(Vector2.new())end)end end end)
 
--- SPEED / JUMP
+-- SPEED / JUMP (с восстановлением дефолтов)
 RunService.Heartbeat:Connect(function()
-if C.SpeedHack then local _,hum=getChar()if hum then hum.WalkSpeed=C.Speed_Value end end
-if C.JumpPower then local _,hum=getChar()if hum then hum.JumpPower=C.Jump_Value end end
-end)
+local _,hum=getChar()
+if hum then
+if C.SpeedHack then hum.WalkSpeed=C.Speed_Value
+elseif hum.WalkSpeed~=16 and hum.WalkSpeed~=0 then hum.WalkSpeed=16 end
+if C.JumpPower then hum.JumpPower=C.Jump_Value
+elseif hum.JumpPower~=50 and hum.JumpPower~=0 then hum.JumpPower=50 end
+end end)
 
 -- INFINITE JUMP
 UIS.JumpRequest:Connect(function()
@@ -517,9 +533,12 @@ if hum then hum:ChangeState(Enum.HumanoidStateType.Jumping)end end end)
 
 -- NO CLIP
 RunService.Stepped:Connect(function()
-if C.NoClip then local char=getChar()
-if char then for _,p in ipairs(char:GetDescendants())do
-if p:IsA("BasePart")then p.CanCollide=false end end end end end)
+local char=getChar()
+if char then
+for _,p in ipairs(char:GetDescendants())do
+if p:IsA("BasePart")then
+if C.NoClip then p.CanCollide=false
+elseif p.CanCollide==false and p.Name~="HumanoidRootPart"then p.CanCollide=true end end end end end end)
 
 -- FLY
 local flyBV,flyBG
@@ -527,16 +546,16 @@ RunService.RenderStepped:Connect(function()
 local char,hum=getChar()
 local hrp=char and char:FindFirstChild("HumanoidRootPart")
 if not hrp then if flyBV then flyBV:Destroy()flyBV=nil end
-if flyBG then flyBG:Destroy()flyBG=nil end return end
-local shouldFly=C.Fly
-if shouldFly and not flyBV then hum.PlatformStand=true
+if flyBG then flyBG:Destroy()flyBG=nil end
+if hum then hum.PlatformStand=false end return end
+if C.Fly and not flyBV then hum.PlatformStand=true
 flyBV=Instance.new("BodyVelocity")flyBV.MaxForce=Vector3.new(1e5,1e5,1e5)
 flyBV.Velocity=Vector3.zero flyBV.Parent=hrp
 flyBG=Instance.new("BodyGyro")flyBG.MaxForce=Vector3.new(1e5,1e5,1e5)
 flyBG.P=1e4 flyBG.CFrame=hrp.CFrame flyBG.Parent=hrp
-elseif not shouldFly and flyBV then flyBV:Destroy()flyBV=nil
+elseif not C.Fly and flyBV then flyBV:Destroy()flyBV=nil
 flyBG:Destroy()flyBG=nil if hum then hum.PlatformStand=false end end
-if shouldFly and flyBV then local cam=workspace.CurrentCamera local dir=Vector3.zero
+if C.Fly and flyBV then local cam=workspace.CurrentCamera local dir=Vector3.zero
 if UIS:IsKeyDown(Enum.KeyCode.W)then dir=dir+cam.CFrame.LookVector end
 if UIS:IsKeyDown(Enum.KeyCode.S)then dir=dir-cam.CFrame.LookVector end
 if UIS:IsKeyDown(Enum.KeyCode.A)then dir=dir-cam.CFrame.RightVector end
@@ -546,31 +565,36 @@ if UIS:IsKeyDown(Enum.KeyCode.LeftShift)then dir=dir-Vector3.new(0,1,0)end
 flyBV.Velocity=dir.Magnitude>0 and dir.Unit*C.Fly_Speed or Vector3.zero
 flyBG.CFrame=CFrame.new(hrp.Position,hrp.Position+cam.CFrame.LookVector)end end)
 
--- LIGHTING LOOP
+-- LIGHTING LOOP (с восстановлением)
+local defaultAmbient=Color3.fromRGB(70,70,70)
+local defaultOutdoor=Color3.fromRGB(70,70,70)
 task.spawn(function()
 while task.wait(0.3)do
 if C.FullBright then
-Lighting.Brightness=3 Lighting.ClockTime=14 Lighting.FogEnd=1e6 end
-if C.NoFog then Lighting.FogEnd=1e6 Lighting.FogStart=1e6 end
-if C.Ambient then Lighting.Ambient=C.AmbientColor Lighting.OutdoorAmbient=C.AmbientColor end
+Lighting.Brightness=3 Lighting.ClockTime=14 Lighting.FogEnd=1e6
+else Lighting.Brightness=1 Lighting.FogEnd=100000 end
+if C.NoFog then Lighting.FogEnd=1e6 Lighting.FogStart=1e6
+else Lighting.FogStart=0 end
+if C.Ambient then Lighting.Ambient=C.AmbientColor Lighting.OutdoorAmbient=C.AmbientColor
+else Lighting.Ambient=defaultAmbient Lighting.OutdoorAmbient=defaultOutdoor end
 if C.ClockTime then Lighting.ClockTime=C.ClockValue end end end)
 
--- NO PARTICLES / GRASS
+-- NO PARTICLES / GRASS (с восстановлением)
 task.spawn(function()
 while task.wait(1)do
-if C.NoParticles then for _,v in ipairs(WS:GetDescendants())do
-if v:IsA("ParticleEmitter")or v:IsA("Trail")or v:IsA("Smoke")then v.Enabled=false end end end
-if C.NoGrass then for _,v in ipairs(WS:GetDescendants())do
+for _,v in ipairs(WS:GetDescendants())do
+if v:IsA("ParticleEmitter")or v:IsA("Trail")or v:IsA("Smoke")then
+if C.NoParticles then v.Enabled=false end end
+if C.NoGrass then
 if v:IsA("BasePart")and v.Name:lower():find("grass")then v.Transparency=1 end end end end end)
 
--- ESP
+-- ESP v3 (правильные кости + очистка)
 local espDrawings={}
 function clearESP()
 for _,d in pairs(espDrawings)do
 for _,obj in pairs(d)do
 if obj and obj.Remove then pcall(function()obj:Remove()end)end end end
 espDrawings={}end
-
 local function getDraw(key,type)
 if not espDrawings[key]then espDrawings[key]={}end
 local d=espDrawings[key][type]
@@ -582,7 +606,6 @@ elseif type=="Line"then d.Thickness=1
 elseif type=="Circle"then d.Thickness=2 d.Filled=true d.NumSides=16 end
 espDrawings[key][type]=d end
 return d end
-
 RunService.RenderStepped:Connect(function()
 if not Drawing then return end
 if not C.ESP then
@@ -639,20 +662,26 @@ tr.To=Vector2.new(sp.X,sp.Y)
 tr.Color=C.ESP_OutlineColor tr.Visible=true
 elseif d.Line then d.Line.Visible=false end
 if C.ESP_Skeleton then
-for _,bn in ipairs({"LeftHand","RightHand","LeftFoot","RightFoot","Head"})do
+local bones={"Head","UpperTorso","LowerTorso","LeftHand","RightHand","LeftFoot","RightFoot"}
+local parts={}
+for _,bn in ipairs(bones)do
 local part=char:FindFirstChild(bn)
-if part then
-local sp1=cam:WorldToViewportPoint(hrp.Position)
-local sp2=cam:WorldToViewportPoint(part.Position)
-local ln=getDraw(key,"Sk"..bn)
-ln.From=Vector2.new(sp1.X,sp1.Y)
-ln.To=Vector2.new(sp2.X,sp2.Y)
+if part then parts[bn]=cam:WorldToViewportPoint(part.Position)end end
+local function line(p1,p2,name)
+if p1 and p2 then
+local ln=getDraw(key,"Sk"..name)
+ln.From=Vector2.new(p1.X,p1.Y)ln.To=Vector2.new(p2.X,p2.Y)
 ln.Color=Color3.fromRGB(255,255,255)ln.Visible=true end end
+line(parts["Head"],parts["UpperTorso"],"1")
+line(parts["UpperTorso"],parts["LowerTorso"],"2")
+line(parts["UpperTorso"],parts["LeftHand"],"3")
+line(parts["UpperTorso"],parts["RightHand"],"4")
+line(parts["LowerTorso"],parts["LeftFoot"],"5")
+line(parts["LowerTorso"],parts["RightFoot"],"6")
 else
-for _,bn in ipairs({"LeftHand","RightHand","LeftFoot","RightFoot","Head"})do
-if d["Sk"..bn]then d["Sk"..bn].Visible=false end end end
+for i=1,6 do if d["Sk"..i]then d["Sk"..i].Visible=false end end end
 if C.ESP_HeadDot then
-local sp1=cam:WorldToViewportPoint(head.Position+Vector3.new(0,1.5,0))
+local sp1=cam:WorldToViewportPoint(head.Position+Vector3.new(0,0.6,0))
 local dot=getDraw(key,"HeadDot")
 dot.Position=Vector2.new(sp1.X,sp1.Y)dot.Radius=3
 dot.Color=Color3.fromRGB(255,80,80)dot.Visible=true
@@ -678,13 +707,11 @@ if cache.origMat[p]then p.Material=cache.origMat[p]end
 if cache.origTrans[p]then p.Transparency=cache.origTrans[p]end end end
 cache.parts=nil end
 chamsCache[char]=nil end
-
 function clearAllChams()
 for char,_ in pairs(chamsCache)do removeChams(char)end
 chamsCache={}
 for _,p in ipairs(WS:GetDescendants())do
 if p:IsA("Highlight")and p.Name=="PhantomChams"then pcall(function()p:Destroy()end)end end end
-
 task.spawn(function()
 while task.wait(0.15)do
 for _,plr in ipairs(Players:GetPlayers())do
@@ -724,21 +751,19 @@ if not cache.origColor[p]then
 cache.origColor[p]=p.Color
 cache.origMat[p]=p.Material
 cache.origTrans[p]=p.Transparency end
-p.Color=color
-p.Material=Enum.Material.ForceField
+p.Color=color p.Material=Enum.Material.ForceField
 p.Transparency=C.ChamsTransparency/100
 if not table.find(cache.parts,p)then table.insert(cache.parts,p)end end end end
 else removeChams(char)end
 else removeChams(char)end end end end)
 
-task.spawn(function()
-while task.wait(0.05)do
-if C.ChamsPulse then
-local t=tick()local a=(math.sin(t*4)+1)/2
-for _,cache in pairs(chamsCache)do
-if cache.hl then cache.hl.FillTransparency=1-(a*(C.ChamsTransparency/100))end end end end end)
-
--- WORLD CHAMS
+-- WORLD CHAMS (с восстановлением)
+local worldOrig={}
+function resetWorld()
+for p,data in pairs(worldOrig)do
+if p and p.Parent then
+p.Material=data.mat p.Color=data.color p.Transparency=data.trans end end
+worldOrig={}end
 task.spawn(function()
 while task.wait(1.5)do
 if C.WorldChams or C.FrozenWorld or C.IceMode or C.NeonMode or C.MetalMode or C.GlassMode or C.ForceField then
@@ -746,6 +771,7 @@ for _,p in ipairs(WS:GetDescendants())do
 if p:IsA("BasePart")then
 local hum=p.Parent and p.Parent:FindFirstChildOfClass("Humanoid")
 if not hum then
+if not worldOrig[p]then worldOrig[p]={mat=p.Material,color=p.Color,trans=p.Transparency}end
 if C.WorldChams then p.Material=Enum.Material.SmoothPlastic
 p.Color=C.WorldChamsColor p.Transparency=C.WorldChamsTransparency/100 end
 if C.FrozenWorld then p.Material=Enum.Material.Ice p.Color=Color3.fromRGB(200,230,255)end
@@ -770,7 +796,6 @@ if onScreen then
 local d=(Vector2.new(sp.X,sp.Y)-center).Magnitude
 if d<bestDist then bestDist=d best=p end end end end end
 return best end
-
 local lastTarget=nil
 RunService.RenderStepped:Connect(function()
 if C.SilentAim then
@@ -793,8 +818,7 @@ local cur=cam.CFrame local goal=CFrame.new(cur.Position,t.Position)
 cam.CFrame=cur:Lerp(goal,1-C.AB_Smooth/100)end end end)
 
 -- FOV CIRCLE
-local fovCircle=Instance.new("Frame")
-fovCircle.Size=UDim2.new(0,C.SA_FOV*2,0,C.SA_FOV*2)
+local fovCircle=Instance.new("Frame")fovCircle.Size=UDim2.new(0,C.SA_FOV*2,0,C.SA_FOV*2)
 fovCircle.Position=UDim2.new(0.5,-C.SA_FOV,0.5,-C.SA_FOV)
 fovCircle.BackgroundTransparency=1 fovCircle.BorderSizePixel=0
 fovCircle.Visible=false fovCircle.ZIndex=10 fovCircle.Parent=screen
@@ -823,25 +847,7 @@ cr2.Position=UDim2.new(0.5,-1,0.5,-C.Crosshair_Size/2)
 cr1.BackgroundColor3=C.Crosshair_Color cr2.BackgroundColor3=C.Crosshair_Color
 cr1.Visible=C.Crosshair cr2.Visible=C.Crosshair end)
 
--- SCREEN EFFECTS
-local vignette=Instance.new("ImageLabel")vignette.Size=UDim2.new(1,0,1,0)
-vignette.BackgroundTransparency=1 vignette.Image="rbxassetid://5558563117"
-vignette.ImageTransparency=0.5 vignette.Visible=false vignette.ZIndex=5 vignette.Parent=screen
-local frost=Instance.new("ImageLabel")frost.Size=UDim2.new(1,0,1,0)
-frost.BackgroundTransparency=1 frost.Image="rbxassetid://5558563117"
-frost.ImageColor3=Color3.fromRGB(200,220,255)frost.ImageTransparency=0.7
-frost.Visible=false frost.ZIndex=5 frost.Parent=screen
-local cinTop=Instance.new("Frame")cinTop.Size=UDim2.new(1,0,0.1,0)
-cinTop.BackgroundColor3=Color3.new(0,0,0)cinTop.BorderSizePixel=0
-cinTop.Visible=false cinTop.ZIndex=5 cinTop.Parent=screen
-local cinBot=Instance.new("Frame")cinBot.Size=UDim2.new(1,0,0.1,0)
-cinBot.Position=UDim2.new(0,0,0.9,0)cinBot.BackgroundColor3=Color3.new(0,0,0)
-cinBot.BorderSizePixel=0 cinBot.Visible=false cinBot.ZIndex=5 cinBot.Parent=screen
-RunService.RenderStepped:Connect(function()
-vignette.Visible=C.Vignette frost.Visible=C.FrostOverlay
-cinTop.Visible=C.CinematicBars cinBot.Visible=C.CinematicBars end)
-
--- WATERMARK + FPS update
+-- WATERMARK + FPS
 local fpsFrames=0 local fpsTime=0 local fpsValue=60
 RunService.RenderStepped:Connect(function(dt)
 fpsFrames=fpsFrames+1 fpsTime=fpsTime+dt
@@ -873,26 +879,20 @@ local id=isHead and idTable.head or idTable.body
 if not id then return end
 pcall(function()
 if soundCache[id]and soundCache[id].Parent then
-soundCache[id].TimePosition=0
-soundCache[id].Volume=C.SoundsVolume/100
+soundCache[id].TimePosition=0 soundCache[id].Volume=C.SoundsVolume/100
 soundCache[id]:Play()
 else
-local s=Instance.new("Sound")
-s.SoundId="rbxassetid://"..id
-s.Volume=C.SoundsVolume/100
-s.Parent=game:GetService("SoundService")
-s:Play()
-soundCache[id]=s end end)end
-
+local s=Instance.new("Sound")s.SoundId="rbxassetid://"..id
+s.Volume=C.SoundsVolume/100 s.Parent=game:GetService("SoundService")
+s:Play()soundCache[id]=s end end)end
 UIS.InputBegan:Connect(function(i,gpe)
 if gpe then return end
 if C.SoundsEnabled and i.UserInputType==Enum.UserInputType.MouseButton1 then
 task.wait(0.05)
-if Drawing then
-local t=getClosestTarget(C.SA_FOV,"Head")
+if Drawing then local t=getClosestTarget(C.SA_FOV,"Head")
 playHit(t~=nil)end end end)
 
--- SILENT AIM bind (клавиша или мышь)
+-- SILENT AIM BIND
 UIS.InputBegan:Connect(function(i,gpe)
 if gpe then return end
 local keyName=i.KeyCode and i.KeyCode.Name or (i.UserInputType==Enum.UserInputType.MouseButton1 and "Mouse1" or i.UserInputType==Enum.UserInputType.MouseButton2 and "Mouse2" or nil)
@@ -900,7 +900,7 @@ if keyName and keyName==C.SA_BindKey then
 C.SilentAim=not C.SilentAim
 log("SilentAim bind: "..tostring(C.SilentAim),C.SilentAim and COL.green or COL.red)end end)
 
--- AIMBOT bind
+-- AIMBOT BIND
 UIS.InputBegan:Connect(function(i,gpe)
 if gpe then return end
 local keyName=i.KeyCode and i.KeyCode.Name or (i.UserInputType==Enum.UserInputType.MouseButton1 and "Mouse1" or i.UserInputType==Enum.UserInputType.MouseButton2 and "Mouse2" or nil)
@@ -909,17 +909,17 @@ UIS.InputEnded:Connect(function(i)
 local keyName=i.KeyCode and i.KeyCode.Name or (i.UserInputType==Enum.UserInputType.MouseButton1 and "Mouse1" or i.UserInputType==Enum.UserInputType.MouseButton2 and "Mouse2" or nil)
 if keyName and keyName==C.AB_Keybind then C.Aimbot=false end end)
 
--- MENU KEYBIND
-UIS.InputBegan:Connect(function(i,gpe)
-if gpe then return end
-if i.KeyCode==C.MenuKey then
+-- MENU KEYBIND — отдельно, чтобы ничего не блокировало
+game:GetService("UserInputService").InputBegan:Connect(function(input,gameProcessed)
+if gameProcessed then return end
+if input.KeyCode==C.MenuKey then
 screen.Enabled=not screen.Enabled
-syslog("Menu: "..tostring(screen.Enabled),screen.Enabled and COL.green or COL.red)end end)
+log("Menu toggled: "..tostring(screen.Enabled),screen.Enabled and COL.green or COL.red)end end)
 
 -- INIT
 pages["Combat"].Visible=true
 buttons["Combat"].TextColor3=COL.accent
-syslog("Phantom HvH v5.2 loaded",COL.accent)
+syslog("Phantom HvH v5.3 loaded",COL.accent)
 syslog("Menu: "..C.MenuKey.Name,COL.textDim)
 syslog("Discord: discord.gg/NaswmCxrE",COL.accent)
 log("Loaded OK",COL.green)
