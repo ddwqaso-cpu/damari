@@ -1,5 +1,13 @@
 -- // Kappa Project | Part 1/5 // Discord: https://discord.gg/NaswmCxrE
 
+-- Жёсткий сброс старой конфиги
+_G.Kappa = nil
+if _G.KappaPart1 then _G.KappaPart1 = nil end
+if _G.KappaPart2 then _G.KappaPart2 = nil end
+if _G.KappaPart3 then _G.KappaPart3 = nil end
+if _G.KappaPart4 then _G.KappaPart4 = nil end
+if _G.KappaPart5 then _G.KappaPart5 = nil end
+
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -16,7 +24,7 @@ local Terrain = workspace.Terrain
 local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
-_G.Kappa = _G.Kappa or {}
+_G.Kappa = {}
 local K = _G.Kappa
 
 K.Players = Players
@@ -35,7 +43,6 @@ K.LocalPlayer = LocalPlayer
 K.Camera = Camera
 
 K.Config = {
-    -- Combat
     SilentAim = false, SilentAimKey = Enum.KeyCode.E, SilentAimPart = "HumanoidRootPart",
     SilentAimFOV = 200, SilentAimSmoothness = 0.1, SilentAimWallCheck = false,
     AimLock = false, AimLockKey = Enum.KeyCode.Q, AimLockPart = "Head",
@@ -46,7 +53,6 @@ K.Config = {
     Gravity = 196.2, JumpPower = 50, WalkSpeed = 16,
     Fly = false, FlySpeed = 50, Noclip = false, InfJump = false,
     AntiStun = false, Spinbot = false, CFrameSpeed = 0,
-    -- Visuals
     ESP = false, ESPBoxes = true, ESPNames = true, ESPHealth = true,
     ESPDistance = true, ESPTracers = false, ESPChams = true,
     ESPChamsColor = Color3.fromRGB(255, 0, 255), ESPChamsTransparency = 0.5,
@@ -82,7 +88,6 @@ K.Config = {
     AtmosphereGlare = 0, AtmosphereHaze = 0,
     Clouds = false, CloudsCover = 0.5, CloudsDensity = 0.5,
     CloudsColor = Color3.fromRGB(255,255,255), CloudsEnabled = false,
-    -- Misc
     DiscordLink = true, DiscordInvite = "https://discord.gg/NaswmCxrE",
     AntiAFK = true, NoClip = false, NoclipSpeed = 50,
     AutoRespawn = false, AutoRespawnDelay = 5,
@@ -121,8 +126,12 @@ K.originalLighting = {
     ColorShift_Bottom = Lighting.ColorShift_Bottom
 }
 
+_G.KappaPart1 = true
 print("[Kappa] Part 1/5 loaded. Paste Part 2 next.")
 -- // Kappa Project | Part 2/5 // Discord: https://discord.gg/NaswmCxrE
+
+if _G.KappaPart2 then return end
+_G.KappaPart2 = true
 
 local K = _G.Kappa
 if not K then warn("[Kappa] Part 1 not loaded! Paste Part 1 first.") return end
@@ -135,7 +144,6 @@ local LocalPlayer = K.LocalPlayer
 local Config = K.Config
 local espCache = K.espCache
 
--- Universal bind checker (supports KeyCode + UserInputType)
 function K.IsBindDown(bind)
     if typeof(bind) == "EnumItem" and bind.EnumType == Enum.KeyCode then
         return UserInputService:IsKeyDown(bind)
@@ -340,6 +348,9 @@ end)
 
 print("[Kappa] Part 2/5 loaded. Paste Part 3 next.")
 -- // Kappa Project | Part 3/5 // Discord: https://discord.gg/NaswmCxrE
+
+if _G.KappaPart3 then return end
+_G.KappaPart3 = true
 
 local K = _G.Kappa
 if not K then warn("[Kappa] Part 1 not loaded! Paste Part 1 first.") return end
@@ -697,6 +708,9 @@ end
 print("[Kappa] Part 3/5 loaded. Paste Part 4 next.")
 -- // Kappa Project | Part 4/5 // Discord: https://discord.gg/NaswmCxrE
 
+if _G.KappaPart4 then return end
+_G.KappaPart4 = true
+
 local K = _G.Kappa
 if not K then warn("[Kappa] Part 1 not loaded! Paste Part 1 first.") return end
 
@@ -704,9 +718,7 @@ local Config = K.Config
 local main = K.tabContents["Main"]
 local vis = K.tabContents["Visuals"]
 
--- =========================================================
--- ============== MAIN TAB (Combat 30+) ====================
--- =========================================================
+-- ============ MAIN TAB (Combat 30+) ============
 
 K.CreateSection(main, "Silent Aim")
 K.CreateToggle(main, "Enabled", Config.SilentAim, function(v) Config.SilentAim = v end, "SilentAim")
@@ -790,9 +802,7 @@ K.CreateToggle(main, "Auto Fire", Config.AutoFire, function(v) Config.AutoFire =
 K.CreateToggle(main, "Anti Stun", Config.AntiStun, function(v) Config.AntiStun = v end, "AntiStun")
 K.CreateToggle(main, "Spinbot", Config.Spinbot, function(v) Config.Spinbot = v end, "Spinbot")
 
--- =========================================================
--- ============== VISUALS TAB (80+) ========================
--- =========================================================
+-- ============ VISUALS TAB (80+) ============
 
 K.CreateSection(vis, "ESP Main")
 K.CreateToggle(vis, "ESP Enabled", Config.ESP, function(v)
@@ -868,10 +878,12 @@ K.CreateSlider(vis, "Water Transparency", Config.WaterTransparency, 0, 1, functi
 end, "WaterTransparency")
 K.CreateColorPicker(vis, "Terrain Color", Config.TerrainColor, function(v)
     Config.TerrainColor = v
-    K.Terrain:SetMaterialColor(Enum.Material.Grass, v)
-    K.Terrain:SetMaterialColor(Enum.Material.Ground, v)
-    K.Terrain:SetMaterialColor(Enum.Material.Rock, v)
-    K.Terrain:SetMaterialColor(Enum.Material.Sand, v)
+    pcall(function()
+        K.Terrain:SetMaterialColor(Enum.Material.Grass, v)
+        K.Terrain:SetMaterialColor(Enum.Material.Ground, v)
+        K.Terrain:SetMaterialColor(Enum.Material.Rock, v)
+        K.Terrain:SetMaterialColor(Enum.Material.Sand, v)
+    end)
 end, "TerrainColor")
 K.CreateColorPicker(vis, "Sky Color", Config.SkyColor, function(v)
     Config.SkyColor = v
@@ -880,7 +892,7 @@ end, "SkyColor")
 K.CreateColorPicker(vis, "Part Color", Config.PartColor, function(v)
     Config.PartColor = v
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("BasePart") and not obj.Parent:FindFirstChildOfClass("Humanoid") then
+        if obj:IsA("BasePart") then
             pcall(function() obj.Color = v end)
         end
     end
@@ -952,6 +964,9 @@ K.CreateToggle(vis, "Sound ESP", Config.SoundESP, function(v) Config.SoundESP = 
 print("[Kappa] Part 4/5 loaded. Paste Part 5 next.")
 -- // Kappa Project | Part 5/5 // Discord: https://discord.gg/NaswmCxrE
 
+if _G.KappaPart5 then return end
+_G.KappaPart5 = true
+
 local K = _G.Kappa
 if not K then warn("[Kappa] Part 1 not loaded! Paste Part 1 first.") return end
 
@@ -968,9 +983,7 @@ local Terrain = K.Terrain
 local misc = K.tabContents["Misc"]
 local settings = K.tabContents["Settings"]
 
--- =========================================================
--- ============== MISC TAB (25+) ===========================
--- =========================================================
+-- ============ MISC TAB (25+) ============
 
 K.CreateSection(misc, "Anti / Protection")
 K.CreateToggle(misc, "Anti AFK", Config.AntiAFK, function(v) Config.AntiAFK = v end, "AntiAFK")
@@ -1013,15 +1026,13 @@ K.CreateBind(misc, "Keybind", Config.AutoClickerKey, function(v) Config.AutoClic
 
 K.CreateSection(misc, "Server")
 K.CreateButton(misc, "Server Hop", function()
-    local TS = K.TeleportService
-    local HS = K.HttpService
     pcall(function()
         local req = request or http_request or (syn and syn.request)
         if req then
-            local servers = HS:JSONDecode(req({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"}).Body)
+            local servers = K.HttpService:JSONDecode(req({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"}).Body)
             for _, s in pairs(servers.data) do
                 if s.playing < s.maxPlayers and s.id ~= game.JobId then
-                    TS:TeleportToPlaceInstance(game.PlaceId, s.id, LocalPlayer)
+                    K.TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id, LocalPlayer)
                     break
                 end
             end
@@ -1041,9 +1052,7 @@ K.CreateToggle(misc, "Anti Spam", Config.AntiSpam, function(v) Config.AntiSpam =
 K.CreateToggle(misc, "Anti Report", Config.AntiReport, function(v) Config.AntiReport = v end, "AntiReport")
 K.CreateToggle(misc, "Anti Ban", Config.AntiBan, function(v) Config.AntiBan = v end, "AntiBan")
 
--- =========================================================
--- ============== SETTINGS TAB =============================
--- =========================================================
+-- ============ SETTINGS TAB ============
 
 K.CreateSection(settings, "Watermark")
 K.CreateToggle(settings, "Enabled", Config.Watermark, function(v)
@@ -1101,9 +1110,7 @@ K.CreateButton(settings, "Unload Script", function()
     _G.Kappa = nil
 end)
 
--- =========================================================
--- ============== WATERMARK / HUD ==========================
--- =========================================================
+-- ============ HUD (Watermark / FPS / Ping / Discord) ============
 
 if K.watermarkGui then K.watermarkGui:Destroy() end
 
@@ -1169,7 +1176,7 @@ discordL.Visible = Config.DiscordLink
 discordL.Parent = wmGui
 K.discordLabel = discordL
 
--- FPS / Ping loop
+-- FPS / Ping update loop
 local frameCount = 0
 local lastTime = tick()
 RunService.RenderStepped:Connect(function()
@@ -1190,9 +1197,7 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- =========================================================
--- ============== FOV CIRCLE ===============================
--- =========================================================
+-- ============ FOV CIRCLE ============
 
 local fovCircle = Drawing.new("Circle")
 fovCircle.Visible = false
@@ -1214,18 +1219,16 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- =========================================================
--- ============== SILENT AIM LOGIC =========================
--- =========================================================
+-- ============ SILENT AIM ============
 
-if hookmetamethod and getnamecallmethod then
+if hookmetamethod and getnamecallmethod and not K.silentAimHooked then
+    K.silentAimHooked = true
     local oldNamecall
     oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
         local method = getnamecallmethod()
         local args = {...}
-        if not Config.SilentAim then return oldNamecall(self, ...) end
-        if method == "FindPartOnRay" or method == "FindPartOnRayWithIgnoreList" 
-           or method == "FindPartOnRayWithWhitelist" or method == "Raycast" then
+        if Config.SilentAim and (method == "FindPartOnRay" or method == "FindPartOnRayWithIgnoreList" 
+           or method == "FindPartOnRayWithWhitelist" or method == "Raycast") then
             local target = K.GetClosestPlayer(Config.SilentAimFOV, Config.SilentAimPart)
             if target and target.Character then
                 local part = target.Character:FindFirstChild(Config.SilentAimPart)
@@ -1243,9 +1246,7 @@ if hookmetamethod and getnamecallmethod then
     end)
 end
 
--- =========================================================
--- ============== AIM LOCK LOGIC ===========================
--- =========================================================
+-- ============ AIM LOCK ============
 
 RunService.RenderStepped:Connect(function()
     if Config.AimLock and K.IsBindDown(Config.AimLockKey) then
@@ -1260,25 +1261,19 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- =========================================================
--- ============== TRIGGER BOT ==============================
--- =========================================================
+-- ============ TRIGGER BOT ============
 
 RunService.RenderStepped:Connect(function()
     if Config.TriggerBot and K.IsBindDown(Config.TriggerBotKey) then
         local target = K.GetClosestPlayer(Config.AimLockFOV, "HumanoidRootPart")
         if target then
             local tool = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Tool")
-            if tool then
-                pcall(function() tool:Activate() end)
-            end
+            if tool then pcall(function() tool:Activate() end) end
         end
     end
 end)
 
--- =========================================================
--- ============== INFINITE JUMP ============================
--- =========================================================
+-- ============ INFINITE JUMP ============
 
 UserInputService.JumpRequest:Connect(function()
     if Config.InfJump then
@@ -1287,23 +1282,17 @@ UserInputService.JumpRequest:Connect(function()
     end
 end)
 
--- =========================================================
--- ============== NOCLIP ===================================
--- =========================================================
+-- ============ NOCLIP ============
 
 RunService.Stepped:Connect(function()
     if Config.Noclip and LocalPlayer.Character then
         for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
-            if part:IsA("BasePart") and part.CanCollide then
-                part.CanCollide = false
-            end
+            if part:IsA("BasePart") and part.CanCollide then part.CanCollide = false end
         end
     end
 end)
 
--- =========================================================
--- ============== FLY ======================================
--- =========================================================
+-- ============ FLY ============
 
 local flyBodyVel, flyBodyGyro
 local function startFly()
@@ -1343,9 +1332,7 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- =========================================================
--- ============== AUTO CLICKER =============================
--- =========================================================
+-- ============ AUTO CLICKER ============
 
 task.spawn(function()
     while true do
@@ -1357,9 +1344,7 @@ task.spawn(function()
     end
 end)
 
--- =========================================================
--- ============== MENU KEYBIND =============================
--- =========================================================
+-- ============ MENU KEYBIND ============
 
 UserInputService.InputBegan:Connect(function(input, gp)
     if gp then return end
@@ -1368,9 +1353,7 @@ UserInputService.InputBegan:Connect(function(input, gp)
     end
 end)
 
--- =========================================================
--- ============== ANTI-AFK =================================
--- =========================================================
+-- ============ ANTI-AFK ============
 
 LocalPlayer.Idled:Connect(function()
     if Config.AntiAFK then
@@ -1379,9 +1362,7 @@ LocalPlayer.Idled:Connect(function()
     end
 end)
 
--- =========================================================
--- ============== AUTO RESPAWN =============================
--- =========================================================
+-- ============ AUTO RESPAWN ============
 
 local function bindAutoRespawn(char)
     local hum = char:WaitForChild("Humanoid", 10)
@@ -1398,68 +1379,32 @@ end
 if LocalPlayer.Character then bindAutoRespawn(LocalPlayer.Character) end
 LocalPlayer.CharacterAdded:Connect(bindAutoRespawn)
 
--- =========================================================
--- ============== SKYBOX / ATMOSPHERE / CLOUDS =============
--- =========================================================
+-- ============ ATMOSPHERE / CLOUDS / EFFECTS ============
 
--- Atmosphere
 local atmosphere = Instance.new("Atmosphere")
 atmosphere.Name = "KappaAtmosphere"
 atmosphere.Parent = Lighting
-atmosphere.Density = Config.AtmosphereDensity
-atmosphere.Offset = Config.AtmosphereOffset
-atmosphere.Color = Config.AtmosphereColor
-atmosphere.Decay = Config.AtmosphereDecay
-atmosphere.Glare = Config.AtmosphereGlare
-atmosphere.Haze = Config.AtmosphereHaze
-atmosphere.Enabled = Config.Atmosphere
 
--- Clouds
 local clouds = Instance.new("Clouds")
 clouds.Name = "KappaClouds"
 clouds.Parent = Terrain
-clouds.Cover = Config.CloudsCover
-clouds.Density = Config.CloudsDensity
-clouds.Color = Config.CloudsColor
-clouds.Enabled = Config.Clouds
 
--- Bloom
 local bloom = Instance.new("BloomEffect")
 bloom.Name = "KappaBloom"
 bloom.Parent = Lighting
-bloom.Intensity = Config.BloomIntensity
-bloom.Size = Config.BloomSize
-bloom.Threshold = Config.BloomThreshold
-bloom.Enabled = Config.Bloom
 
--- Color Correction
 local cc = Instance.new("ColorCorrectionEffect")
 cc.Name = "KappaCC"
 cc.Parent = Lighting
-cc.Brightness = Config.ColorCorrectionBrightness
-cc.Contrast = Config.ColorCorrectionContrast
-cc.Saturation = Config.ColorCorrectionSaturation
-cc.Enabled = Config.ColorCorrection
 
--- Depth of Field
 local dof = Instance.new("DepthOfFieldEffect")
 dof.Name = "KappaDOF"
 dof.Parent = Lighting
-dof.FarIntensity = Config.DepthOfFieldFarIntensity
-dof.FocusDistance = Config.DepthOfFieldFocusDistance
-dof.InFocusRadius = Config.DepthOfFieldInFocusRadius
-dof.NearIntensity = Config.DepthOfFieldNearIntensity
-dof.Enabled = Config.DepthOfField
 
--- Sun Rays
 local sunRays = Instance.new("SunRaysEffect")
 sunRays.Name = "KappaSunRays"
 sunRays.Parent = Lighting
-sunRays.Intensity = Config.SunRaysIntensity
-sunRays.Spread = Config.SunRaysSpread
-sunRays.Enabled = Config.SunRays
 
--- Update effects each frame based on config
 RunService.RenderStepped:Connect(function()
     atmosphere.Enabled = Config.Atmosphere
     atmosphere.Density = Config.AtmosphereDensity
@@ -1495,9 +1440,7 @@ RunService.RenderStepped:Connect(function()
     sunRays.Spread = Config.SunRaysSpread
 end)
 
--- =========================================================
--- ============== FULLBRIGHT AUTO-REAPPLY ==================
--- =========================================================
+-- ============ FULLBRIGHT REAPPLY ============
 
 RunService.Heartbeat:Connect(function()
     if Config.Fullbright then
@@ -1512,10 +1455,6 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
--- =========================================================
--- ============== DONE =====================================
--- =========================================================
-
-print("[Kappa] Part 5/5 loaded.")
-print("[Kappa] Full script ready. Press INSERT to toggle menu.")
+print("[Kappa] Part 5/5 loaded. Full script ready.")
+print("[Kappa] Press INSERT to toggle menu.")
 print("[Kappa] Discord: " .. Config.DiscordInvite)
