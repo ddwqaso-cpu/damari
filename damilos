@@ -35,6 +35,7 @@ K.LocalPlayer = LocalPlayer
 K.Camera = Camera
 
 K.Config = {
+    -- Combat
     SilentAim = false, SilentAimKey = Enum.KeyCode.E, SilentAimPart = "HumanoidRootPart",
     SilentAimFOV = 200, SilentAimSmoothness = 0.1, SilentAimWallCheck = false,
     AimLock = false, AimLockKey = Enum.KeyCode.Q, AimLockPart = "Head",
@@ -45,6 +46,7 @@ K.Config = {
     Gravity = 196.2, JumpPower = 50, WalkSpeed = 16,
     Fly = false, FlySpeed = 50, Noclip = false, InfJump = false,
     AntiStun = false, Spinbot = false, CFrameSpeed = 0,
+    -- Visuals
     ESP = false, ESPBoxes = true, ESPNames = true, ESPHealth = true,
     ESPDistance = true, ESPTracers = false, ESPChams = true,
     ESPChamsColor = Color3.fromRGB(255, 0, 255), ESPChamsTransparency = 0.5,
@@ -80,13 +82,14 @@ K.Config = {
     AtmosphereGlare = 0, AtmosphereHaze = 0,
     Clouds = false, CloudsCover = 0.5, CloudsDensity = 0.5,
     CloudsColor = Color3.fromRGB(255,255,255), CloudsEnabled = false,
+    -- Misc
     DiscordLink = true, DiscordInvite = "https://discord.gg/NaswmCxrE",
     AntiAFK = true, NoClip = false, NoclipSpeed = 50,
     AutoRespawn = false, AutoRespawnDelay = 5,
     AutoBuy = false, AutoSell = false, AutoFish = false, AutoFarm = false,
     AutoQuest = false, AutoCollect = false, AutoHeal = false, AutoArmor = false,
     AutoAmmo = false, AutoClicker = false, AutoClickerDelay = 0.1,
-    AutoClickerKey = Enum.KeyCode.Mouse1,
+    AutoClickerKey = Enum.UserInputType.MouseButton1,
     ServerHop = false, Rejoin = false, AntiKick = false, AntiVoid = false,
     AntiFling = false, AntiTeleport = false, AntiGravity = false,
     AntiFog = false, AntiBlur = false, AntiFlash = false, AntiExplosion = false,
@@ -126,10 +129,21 @@ if not K then warn("[Kappa] Part 1 not loaded! Paste Part 1 first.") return end
 
 local Players = K.Players
 local RunService = K.RunService
+local UserInputService = K.UserInputService
 local Camera = K.Camera
 local LocalPlayer = K.LocalPlayer
 local Config = K.Config
 local espCache = K.espCache
+
+-- Universal bind checker (supports KeyCode + UserInputType)
+function K.IsBindDown(bind)
+    if typeof(bind) == "EnumItem" and bind.EnumType == Enum.KeyCode then
+        return UserInputService:IsKeyDown(bind)
+    elseif typeof(bind) == "EnumItem" and bind.EnumType == Enum.UserInputType then
+        return UserInputService:IsMouseButtonPressed(bind)
+    end
+    return false
+end
 
 function K.GetPlayers()
     local list = {}
@@ -313,7 +327,6 @@ function K.UpdateESP()
     end
 end
 
--- Auto-track players joining/leaving
 Players.PlayerAdded:Connect(function(p)
     p.CharacterAdded:Connect(function()
         task.wait(1)
@@ -335,7 +348,6 @@ local CoreGui = K.CoreGui
 local UserInputService = K.UserInputService
 local Config = K.Config
 
--- Remove old GUI if exists
 if K.gui then K.gui:Destroy() end
 
 local gui = Instance.new("ScreenGui")
@@ -386,7 +398,7 @@ closeBtn.MouseButton1Click:Connect(function()
     gui.Enabled = false
 end)
 
--- Drag menu
+-- Drag
 local dragging = false
 local dragStart, startPos
 tabBar.InputBegan:Connect(function(input)
@@ -546,13 +558,13 @@ function K.CreateSlider(parent, name, default, min, max, callback, flag)
     btn.BackgroundTransparency = 1
     btn.Text = ""
     btn.Parent = sliderFrame
-    local dragging = false
-    btn.MouseButton1Down:Connect(function() dragging = true end)
+    local sDrag = false
+    btn.MouseButton1Down:Connect(function() sDrag = true end)
     UserInputService.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then sDrag = false end
     end)
     UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        if sDrag and input.UserInputType == Enum.UserInputType.MouseMovement then
             local pos = math.clamp((input.Position.X - sliderFrame.AbsolutePosition.X) / sliderFrame.AbsoluteSize.X, 0, 1)
             local value = min + (max - min) * pos
             fill.Size = UDim2.new(pos, 0, 1, 0)
@@ -634,11 +646,19 @@ function K.CreateBind(parent, name, default, callback, flag)
         bindBtn.Text = "..."
     end)
     UserInputService.InputBegan:Connect(function(input, gp)
-        if isBinding and not gp and input.UserInputType == Enum.UserInputType.Keyboard then
-            bindBtn.Text = input.KeyCode.Name
-            Config[flag] = input.KeyCode
-            isBinding = false
-            callback(input.KeyCode)
+        if isBinding and not gp then
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                bindBtn.Text = input.KeyCode.Name
+                Config[flag] = input.KeyCode
+                isBinding = false
+                callback(input.KeyCode)
+            elseif input.UserInputType == Enum.UserInputType.MouseButton1 
+                or input.UserInputType == Enum.UserInputType.MouseButton2 then
+                bindBtn.Text = input.UserInputType.Name
+                Config[flag] = input.UserInputType
+                isBinding = false
+                callback(input.UserInputType)
+            end
         end
     end)
     return frame
@@ -848,9 +868,10 @@ K.CreateSlider(vis, "Water Transparency", Config.WaterTransparency, 0, 1, functi
 end, "WaterTransparency")
 K.CreateColorPicker(vis, "Terrain Color", Config.TerrainColor, function(v)
     Config.TerrainColor = v
-    for _, obj in pairs(K.Terrain:GetChildren()) do
-        if obj:IsA("BasePart") then pcall(function() obj.Color = v end) end
-    end
+    K.Terrain:SetMaterialColor(Enum.Material.Grass, v)
+    K.Terrain:SetMaterialColor(Enum.Material.Ground, v)
+    K.Terrain:SetMaterialColor(Enum.Material.Rock, v)
+    K.Terrain:SetMaterialColor(Enum.Material.Sand, v)
 end, "TerrainColor")
 K.CreateColorPicker(vis, "Sky Color", Config.SkyColor, function(v)
     Config.SkyColor = v
@@ -859,7 +880,7 @@ end, "SkyColor")
 K.CreateColorPicker(vis, "Part Color", Config.PartColor, function(v)
     Config.PartColor = v
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("BasePart") and not obj:FindFirstChildOfClass("Humanoid") then
+        if obj:IsA("BasePart") and not obj.Parent:FindFirstChildOfClass("Humanoid") then
             pcall(function() obj.Color = v end)
         end
     end
@@ -878,9 +899,7 @@ K.CreateColorPicker(vis, "Highlight Color", Config.HighlightColor, function(v)
 end, "HighlightColor")
 K.CreateColorPicker(vis, "Ground Color", Config.GroundColor, function(v)
     Config.GroundColor = v
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Terrain") then pcall(function() K.Terrain:SetMaterialColor(Enum.Material.Ground, v) end) end
-    end
+    pcall(function() K.Terrain:SetMaterialColor(Enum.Material.Ground, v) end)
 end, "GroundColor")
 
 K.CreateSection(vis, "Sky & Atmosphere")
@@ -997,7 +1016,7 @@ K.CreateButton(misc, "Server Hop", function()
     local TS = K.TeleportService
     local HS = K.HttpService
     pcall(function()
-        local req = request or http_request or syn and syn.request
+        local req = request or http_request or (syn and syn.request)
         if req then
             local servers = HS:JSONDecode(req({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"}).Body)
             for _, s in pairs(servers.data) do
@@ -1067,7 +1086,7 @@ end, "DiscordLink")
 K.CreateTextbox(settings, "Invite", Config.DiscordInvite, function(v)
     Config.DiscordInvite = v
     if K.watermarkLabel then K.watermarkLabel.Text = Config.WatermarkText .. " | " .. v end
-    if K.discordLabel then K.discordLabel.Text = v end
+    if K.discordLabel then K.discordLabel.Text = "Discord: " .. v end
 end, "DiscordInvite")
 K.CreateButton(settings, "Copy Invite", function()
     if setclipboard then setclipboard(Config.DiscordInvite) end
@@ -1086,6 +1105,8 @@ end)
 -- ============== WATERMARK / HUD ==========================
 -- =========================================================
 
+if K.watermarkGui then K.watermarkGui:Destroy() end
+
 local wmGui = Instance.new("ScreenGui")
 wmGui.Name = "KappaHUD"
 wmGui.Parent = CoreGui
@@ -1093,7 +1114,7 @@ wmGui.ResetOnSpawn = false
 K.watermarkGui = wmGui
 
 local wm = Instance.new("TextLabel")
-wm.Size = UDim2.new(0, 350, 0, 25)
+wm.Size = UDim2.new(0, 400, 0, 25)
 wm.Position = UDim2.new(0, 10, 0, 10)
 wm.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 wm.BackgroundTransparency = 0.4
@@ -1135,7 +1156,7 @@ pingL.Parent = wmGui
 K.pingLabel = pingL
 
 local discordL = Instance.new("TextLabel")
-discordL.Size = UDim2.new(0, 350, 0, 20)
+discordL.Size = UDim2.new(0, 400, 0, 20)
 discordL.Position = UDim2.new(0, 10, 0, 84)
 discordL.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 discordL.BackgroundTransparency = 0.4
@@ -1148,7 +1169,7 @@ discordL.Visible = Config.DiscordLink
 discordL.Parent = wmGui
 K.discordLabel = discordL
 
--- FPS / Ping update loop
+-- FPS / Ping loop
 local frameCount = 0
 local lastTime = tick()
 RunService.RenderStepped:Connect(function()
@@ -1186,7 +1207,7 @@ RunService.RenderStepped:Connect(function()
     if Config.FOVCircle and (Config.SilentAim or Config.AimLock) then
         fovCircle.Visible = true
         fovCircle.Position = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
-        fovCircle.Radius = Config.SilentAim or Config.AimLockFOV
+        fovCircle.Radius = Config.SilentAim and Config.SilentAimFOV or Config.AimLockFOV
         fovCircle.Color = Config.FOVCircleColor
     else
         fovCircle.Visible = false
@@ -1197,35 +1218,37 @@ end)
 -- ============== SILENT AIM LOGIC =========================
 -- =========================================================
 
-local oldNamecall
-oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
-    local method = getnamecallmethod()
-    local args = {...}
-    if not Config.SilentAim then return oldNamecall(self, ...) end
-    if method == "FindPartOnRay" or method == "FindPartOnRayWithIgnoreList" 
-       or method == "FindPartOnRayWithWhitelist" or method == "Raycast" then
-        local target = K.GetClosestPlayer(Config.SilentAimFOV, Config.SilentAimPart)
-        if target and target.Character then
-            local part = target.Character:FindFirstChild(Config.SilentAimPart)
-            if part then
-                if method == "Raycast" then
-                    args[2] = CFrame.new(Camera.CFrame.Position, part.Position).LookVector * 1000
-                else
-                    args[1] = Ray.new(Camera.CFrame.Position, (part.Position - Camera.CFrame.Position).Unit * 1000)
+if hookmetamethod and getnamecallmethod then
+    local oldNamecall
+    oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+        local method = getnamecallmethod()
+        local args = {...}
+        if not Config.SilentAim then return oldNamecall(self, ...) end
+        if method == "FindPartOnRay" or method == "FindPartOnRayWithIgnoreList" 
+           or method == "FindPartOnRayWithWhitelist" or method == "Raycast" then
+            local target = K.GetClosestPlayer(Config.SilentAimFOV, Config.SilentAimPart)
+            if target and target.Character then
+                local part = target.Character:FindFirstChild(Config.SilentAimPart)
+                if part then
+                    if method == "Raycast" then
+                        args[2] = CFrame.new(Camera.CFrame.Position, part.Position).LookVector * 1000
+                    else
+                        args[1] = Ray.new(Camera.CFrame.Position, (part.Position - Camera.CFrame.Position).Unit * 1000)
+                    end
+                    return oldNamecall(self, unpack(args))
                 end
-                return oldNamecall(self, unpack(args))
             end
         end
-    end
-    return oldNamecall(self, ...)
-end)
+        return oldNamecall(self, ...)
+    end)
+end
 
 -- =========================================================
 -- ============== AIM LOCK LOGIC ===========================
 -- =========================================================
 
 RunService.RenderStepped:Connect(function()
-    if Config.AimLock and UserInputService:IsKeyDown(Config.AimLockKey) then
+    if Config.AimLock and K.IsBindDown(Config.AimLockKey) then
         local target = K.GetClosestPlayer(Config.AimLockFOV, Config.AimLockPart)
         if target and target.Character then
             local part = target.Character:FindFirstChild(Config.AimLockPart)
@@ -1242,12 +1265,12 @@ end)
 -- =========================================================
 
 RunService.RenderStepped:Connect(function()
-    if Config.TriggerBot and UserInputService:IsKeyDown(Config.TriggerBotKey) then
+    if Config.TriggerBot and K.IsBindDown(Config.TriggerBotKey) then
         local target = K.GetClosestPlayer(Config.AimLockFOV, "HumanoidRootPart")
         if target then
             local tool = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Tool")
-            if tool and tool:FindFirstChild("Handle") then
-                tool:Activate()
+            if tool then
+                pcall(function() tool:Activate() end)
             end
         end
     end
@@ -1321,6 +1344,20 @@ RunService.RenderStepped:Connect(function()
 end)
 
 -- =========================================================
+-- ============== AUTO CLICKER =============================
+-- =========================================================
+
+task.spawn(function()
+    while true do
+        task.wait(Config.AutoClickerDelay)
+        if Config.AutoClicker and K.IsBindDown(Config.AutoClickerKey) then
+            local tool = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Tool")
+            if tool then pcall(function() tool:Activate() end) end
+        end
+    end
+end)
+
+-- =========================================================
 -- ============== MENU KEYBIND =============================
 -- =========================================================
 
@@ -1346,18 +1383,137 @@ end)
 -- ============== AUTO RESPAWN =============================
 -- =========================================================
 
-LocalPlayer.CharacterAdded:Connect(function(char)
-    local hum = char:WaitForChild("Humanoid")
-    hum.Died:Connect(function()
-        if Config.AutoRespawn then
-            task.wait(Config.AutoRespawnDelay)
-            LocalPlayer:LoadCharacter()
-        end
-    end)
+local function bindAutoRespawn(char)
+    local hum = char:WaitForChild("Humanoid", 10)
+    if hum then
+        hum.Died:Connect(function()
+            if Config.AutoRespawn then
+                task.wait(Config.AutoRespawnDelay)
+                pcall(function() LocalPlayer:LoadCharacter() end)
+            end
+        end)
+    end
+end
+
+if LocalPlayer.Character then bindAutoRespawn(LocalPlayer.Character) end
+LocalPlayer.CharacterAdded:Connect(bindAutoRespawn)
+
+-- =========================================================
+-- ============== SKYBOX / ATMOSPHERE / CLOUDS =============
+-- =========================================================
+
+-- Atmosphere
+local atmosphere = Instance.new("Atmosphere")
+atmosphere.Name = "KappaAtmosphere"
+atmosphere.Parent = Lighting
+atmosphere.Density = Config.AtmosphereDensity
+atmosphere.Offset = Config.AtmosphereOffset
+atmosphere.Color = Config.AtmosphereColor
+atmosphere.Decay = Config.AtmosphereDecay
+atmosphere.Glare = Config.AtmosphereGlare
+atmosphere.Haze = Config.AtmosphereHaze
+atmosphere.Enabled = Config.Atmosphere
+
+-- Clouds
+local clouds = Instance.new("Clouds")
+clouds.Name = "KappaClouds"
+clouds.Parent = Terrain
+clouds.Cover = Config.CloudsCover
+clouds.Density = Config.CloudsDensity
+clouds.Color = Config.CloudsColor
+clouds.Enabled = Config.Clouds
+
+-- Bloom
+local bloom = Instance.new("BloomEffect")
+bloom.Name = "KappaBloom"
+bloom.Parent = Lighting
+bloom.Intensity = Config.BloomIntensity
+bloom.Size = Config.BloomSize
+bloom.Threshold = Config.BloomThreshold
+bloom.Enabled = Config.Bloom
+
+-- Color Correction
+local cc = Instance.new("ColorCorrectionEffect")
+cc.Name = "KappaCC"
+cc.Parent = Lighting
+cc.Brightness = Config.ColorCorrectionBrightness
+cc.Contrast = Config.ColorCorrectionContrast
+cc.Saturation = Config.ColorCorrectionSaturation
+cc.Enabled = Config.ColorCorrection
+
+-- Depth of Field
+local dof = Instance.new("DepthOfFieldEffect")
+dof.Name = "KappaDOF"
+dof.Parent = Lighting
+dof.FarIntensity = Config.DepthOfFieldFarIntensity
+dof.FocusDistance = Config.DepthOfFieldFocusDistance
+dof.InFocusRadius = Config.DepthOfFieldInFocusRadius
+dof.NearIntensity = Config.DepthOfFieldNearIntensity
+dof.Enabled = Config.DepthOfField
+
+-- Sun Rays
+local sunRays = Instance.new("SunRaysEffect")
+sunRays.Name = "KappaSunRays"
+sunRays.Parent = Lighting
+sunRays.Intensity = Config.SunRaysIntensity
+sunRays.Spread = Config.SunRaysSpread
+sunRays.Enabled = Config.SunRays
+
+-- Update effects each frame based on config
+RunService.RenderStepped:Connect(function()
+    atmosphere.Enabled = Config.Atmosphere
+    atmosphere.Density = Config.AtmosphereDensity
+    atmosphere.Offset = Config.AtmosphereOffset
+    atmosphere.Color = Config.AtmosphereColor
+    atmosphere.Decay = Config.AtmosphereDecay
+    atmosphere.Glare = Config.AtmosphereGlare
+    atmosphere.Haze = Config.AtmosphereHaze
+
+    clouds.Enabled = Config.Clouds
+    clouds.Cover = Config.CloudsCover
+    clouds.Density = Config.CloudsDensity
+    clouds.Color = Config.CloudsColor
+
+    bloom.Enabled = Config.Bloom
+    bloom.Intensity = Config.BloomIntensity
+    bloom.Size = Config.BloomSize
+    bloom.Threshold = Config.BloomThreshold
+
+    cc.Enabled = Config.ColorCorrection
+    cc.Brightness = Config.ColorCorrectionBrightness
+    cc.Contrast = Config.ColorCorrectionContrast
+    cc.Saturation = Config.ColorCorrectionSaturation
+
+    dof.Enabled = Config.DepthOfField
+    dof.FarIntensity = Config.DepthOfFieldFarIntensity
+    dof.FocusDistance = Config.DepthOfFieldFocusDistance
+    dof.InFocusRadius = Config.DepthOfFieldInFocusRadius
+    dof.NearIntensity = Config.DepthOfFieldNearIntensity
+
+    sunRays.Enabled = Config.SunRays
+    sunRays.Intensity = Config.SunRaysIntensity
+    sunRays.Spread = Config.SunRaysSpread
 end)
 
 -- =========================================================
--- ============== SERVER HOP KEYBIND (optional) ============
+-- ============== FULLBRIGHT AUTO-REAPPLY ==================
+-- =========================================================
+
+RunService.Heartbeat:Connect(function()
+    if Config.Fullbright then
+        pcall(function()
+            Lighting.Brightness = Config.FullbrightBrightness
+            Lighting.Ambient = Config.AmbientColor
+            Lighting.OutdoorAmbient = Config.OutdoorAmbient
+            Lighting.ClockTime = Config.ClockTime
+            Lighting.FogEnd = Config.FogEnd
+            Lighting.FogColor = Config.FogColor
+        end)
+    end
+end)
+
+-- =========================================================
+-- ============== DONE =====================================
 -- =========================================================
 
 print("[Kappa] Part 5/5 loaded.")
