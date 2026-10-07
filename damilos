@@ -508,4 +508,211 @@ if dist<=C.ESP_MaxDistance then
 local sp,onScreen=cam:WorldToViewportPoint(hrp.Position)
 if onScreen then
 local key=plr.Name alive[key]=true
-if
+-- ПРОДОЛЖЕНИЕ ESP
+local d=espDrawings[key]
+if C.ESP_Box then
+local topSp=cam:WorldToViewportPoint(head.Position+Vector3.new(0,1,0))
+local botSp=cam:WorldToViewportPoint(hrp.Position-Vector3.new(0,3,0))
+local hh=math.abs(botSp.Y-topSp.Y)
+local ww=hh*0.6
+local box=getDraw(key,"Square")
+box.Size=Vector2.new(ww,hh)
+box.Position=Vector2.new(sp.X-ww/2,topSp.Y)
+box.Color=C.ESP_OutlineColor
+box.Visible=true
+elseif d.Square then d.Square.Visible=false end
+if C.ESP_Name then local nm=getDraw(key,"Name")
+nm.Text=plr.Name nm.Position=Vector2.new(sp.X,sp.Y-32)
+nm.Color=C.ESP_FillColor nm.Visible=true
+elseif d.Name then d.Name.Visible=false end
+if C.ESP_Health then local hp=getDraw(key,"HpText")
+hp.Text=math.floor(hum.Health).." HP"
+hp.Position=Vector2.new(sp.X,sp.Y-16)
+hp.Color=C.ESP_FillColor hp.Visible=true
+elseif d.HpText then d.HpText.Visible=false end
+if C.ESP_Distance then local ds=getDraw(key,"Dist")
+ds.Text=math.floor(dist).."m"
+ds.Position=Vector2.new(sp.X,sp.Y+12)
+ds.Color=C.ESP_FillColor ds.Visible=true
+elseif d.Dist then d.Dist.Visible=false end
+if C.ESP_Tracer then local tr=getDraw(key,"Line")
+tr.From=Vector2.new(cam.ViewportSize.X/2,cam.ViewportSize.Y)
+tr.To=Vector2.new(sp.X,sp.Y)
+tr.Color=C.ESP_OutlineColor tr.Visible=true
+elseif d.Line then d.Line.Visible=false end
+if C.ESP_HeadDot then
+local sp1=cam:WorldToViewportPoint(head.Position+Vector3.new(0,0.6,0))
+local dot=getDraw(key,"HeadDot")
+dot.Position=Vector2.new(sp1.X,sp1.Y)dot.Radius=3
+dot.Color=Color3.fromRGB(255,80,80)dot.Visible=true
+elseif d.HeadDot then d.HeadDot.Visible=false end
+end end end end end
+for name,d in pairs(espDrawings)do
+if not alive[name]then
+for _,obj in pairs(d)do
+if obj and obj.Remove then pcall(function()obj:Remove()end)end end
+espDrawings[name]=nil end end end)
+
+-- CHAMS
+local chamsCache={}
+local function removeChams(char)
+if not chamsCache[char]then return end
+local cache=chamsCache[char]
+if cache.hl then pcall(function()cache.hl:Destroy()end)cache.hl=nil end
+if cache.parts then
+for _,p in ipairs(cache.parts)do
+if p and p.Parent then
+if cache.origColor[p]then p.Color=cache.origColor[p]end
+if cache.origMat[p]then p.Material=cache.origMat[p]end
+if cache.origTrans[p]then p.Transparency=cache.origTrans[p]end end end
+cache.parts=nil end
+chamsCache[char]=nil end
+function clearAllChams()
+for char,_ in pairs(chamsCache)do removeChams(char)end
+chamsCache={}
+for _,p in ipairs(WS:GetDescendants())do
+if p:IsA("Highlight")and p.Name=="PhantomChams"then pcall(function()p:Destroy()end)end end end
+task.spawn(function()
+while task.wait(0.15)do
+for _,plr in ipairs(Players:GetPlayers())do
+local char=plr.Character
+if char then
+local shouldShow=false local color=C.ChamsEnemyColor
+if plr==lp and C.ChamsSelf then shouldShow=true color=C.ChamsSelfColor
+elseif plr~=lp and plr.Team==lp.Team and C.ChamsTeam then shouldShow=true color=C.ChamsTeamColor
+elseif plr~=lp and C.ChamsEnemy then shouldShow=true color=C.ChamsEnemyColor end
+if shouldShow then
+if not chamsCache[char]then chamsCache[char]={origColor={},origMat={},origTrans={}}end
+local cache=chamsCache[char]
+if C.ChamsMode=="Highlight"or C.ChamsMode=="Outline"then
+if cache.parts then for _,p in ipairs(cache.parts)do
+if p and p.Parent then
+if cache.origColor[p]then p.Color=cache.origColor[p]end
+if cache.origMat[p]then p.Material=cache.origMat[p]end
+if cache.origTrans[p]then p.Transparency=cache.origTrans[p]end end end
+cache.parts=nil end
+if not cache.hl then local hl=Instance.new("Highlight")
+hl.Name="PhantomChams"hl.Adornee=char hl.Parent=char cache.hl=hl end
+cache.hl.FillColor=color cache.hl.OutlineColor=C.ChamsOutlineColor
+cache.hl.FillTransparency=C.ChamsMode=="Outline"and 1 or 1-(C.ChamsTransparency/100)
+cache.hl.OutlineTransparency=C.ChamsMode=="Fill"and 1 or 0
+cache.hl.DepthMode=C.ChamsXRay and Enum.HighlightDepthMode.AlwaysOnTop or Enum.HighlightDepthMode.Occluded
+elseif C.ChamsMode=="Fill"then
+if cache.hl then pcall(function()cache.hl:Destroy()end)cache.hl=nil end
+if not cache.parts then cache.parts={}end
+for _,p in ipairs(char:GetDescendants())do
+if p:IsA("BasePart")and p.Name~="HumanoidRootPart"then
+if not cache.origColor[p]then cache.origColor[p]=p.Color cache.origMat[p]=p.Material cache.origTrans[p]=p.Transparency end
+p.Color=color p.Material=Enum.Material.ForceField p.Transparency=C.ChamsTransparency/100
+if not table.find(cache.parts,p)then table.insert(cache.parts,p)end end end end
+else removeChams(char)end
+else removeChams(char)end end end end)
+
+local worldOrig={}
+function resetWorld()
+for p,data in pairs(worldOrig)do
+if p and p.Parent then p.Material=data.mat p.Color=data.color p.Transparency=data.trans end end
+worldOrig={}end
+task.spawn(function()
+while task.wait(1.5)do
+if C.WorldChams or C.FrozenWorld or C.IceMode or C.NeonMode or C.MetalMode or C.GlassMode or C.ForceField then
+for _,p in ipairs(WS:GetDescendants())do
+if p:IsA("BasePart")then
+local hum=p.Parent and p.Parent:FindFirstChildOfClass("Humanoid")
+if not hum then
+if not worldOrig[p]then worldOrig[p]={mat=p.Material,color=p.Color,trans=p.Transparency}end
+if C.WorldChams then p.Material=Enum.Material.SmoothPlastic p.Color=C.WorldChamsColor p.Transparency=C.WorldChamsTransparency/100 end
+if C.FrozenWorld then p.Material=Enum.Material.Ice p.Color=Color3.fromRGB(200,230,255)end
+if C.IceMode then p.Material=Enum.Material.Ice p.Color=C.WorldChamsColor end
+if C.NeonMode then p.Material=Enum.Material.Neon end
+if C.MetalMode then p.Material=Enum.Material.Metal end
+if C.GlassMode then p.Material=Enum.Material.Glass p.Transparency=0.5 end
+if C.ForceField then p.Material=Enum.Material.ForceField p.Color=C.FFColor end end end end end end end)
+task.spawn(function() local last=false while task.wait(0.5)do
+local cur=C.WorldChams or C.FrozenWorld or C.IceMode or C.NeonMode or C.MetalMode or C.GlassMode or C.ForceField
+if last and not cur then resetWorld()end last=cur end end)
+
+local function getClosestTarget(fov,part)
+local cam=workspace.CurrentCamera local center=Vector2.new(cam.ViewportSize.X/2,cam.ViewportSize.Y/2)
+local best,bestDist=nil,fov
+for _,plr in ipairs(Players:GetPlayers())do
+local ok,char,hum=isValidTarget(plr)
+if ok then local p=char:FindFirstChild(part)
+if p then local sp,onScreen=cam:WorldToViewportPoint(p.Position)
+if onScreen then local d=(Vector2.new(sp.X,sp.Y)-center).Magnitude
+if d<bestDist then bestDist=d best=p end end end end end
+return best end
+local lastTarget=nil
+RunService.RenderStepped:Connect(function()
+if C.SilentAim then local t=getClosestTarget(C.SA_FOV,C.SA_Hitbox)
+if t then local cam=workspace.CurrentCamera cam.CFrame=CFrame.new(cam.CFrame.Position,t.Position)
+if C.SA_HitLog and lastTarget~=t.Parent.Name then lastTarget=t.Parent.Name hitlog("Locked -> "..t.Parent.Name,COL.accent)end
+else lastTarget=nil end end end)
+RunService.RenderStepped:Connect(function()
+if C.Aimbot then local t=getClosestTarget(C.AB_FOV,C.AB_Part)
+if t then local cam=workspace.CurrentCamera local cur=cam.CFrame local goal=CFrame.new(cur.Position,t.Position)
+cam.CFrame=cur:Lerp(goal,1-C.AB_Smooth/100)end end end)
+
+local fovCircle=Instance.new("Frame")fovCircle.Size=UDim2.new(0,C.SA_FOV*2,0,C.SA_FOV*2)
+fovCircle.Position=UDim2.new(0.5,-C.SA_FOV,0.5,-C.SA_FOV)
+fovCircle.BackgroundTransparency=1 fovCircle.BorderSizePixel=0 fovCircle.Visible=false fovCircle.ZIndex=10 fovCircle.Parent=screen
+Instance.new("UICorner",fovCircle).CornerRadius=UDim.new(1,0)
+local fovStroke=Instance.new("UIStroke",fovCircle)fovStroke.Color=C.FOV_Color fovStroke.Thickness=1 fovStroke.Transparency=0.5
+RunService.RenderStepped:Connect(function()
+fovCircle.Size=UDim2.new(0,C.SA_FOV*2,0,C.SA_FOV*2)fovCircle.Position=UDim2.new(0.5,-C.SA_FOV,0.5,-C.SA_FOV)
+fovStroke.Color=C.FOV_Color fovCircle.Visible=C.FOVCircle end)
+
+local cr1=Instance.new("Frame")cr1.Size=UDim2.new(0,C.Crosshair_Size,0,2)cr1.Position=UDim2.new(0.5,-C.Crosshair_Size/2,0.5,-1)
+cr1.BackgroundColor3=C.Crosshair_Color cr1.BorderSizePixel=0 cr1.Visible=false cr1.ZIndex=10 cr1.Parent=screen
+local cr2=Instance.new("Frame")cr2.Size=UDim2.new(0,2,0,C.Crosshair_Size)cr2.Position=UDim2.new(0.5,-1,0.5,-C.Crosshair_Size/2)
+cr2.BackgroundColor3=C.Crosshair_Color cr2.BorderSizePixel=0 cr2.Visible=false cr2.ZIndex=10 cr2.Parent=screen
+RunService.RenderStepped:Connect(function()
+cr1.Size=UDim2.new(0,C.Crosshair_Size,0,2)cr1.Position=UDim2.new(0.5,-C.Crosshair_Size/2,0.5,-1)
+cr2.Size=UDim2.new(0,2,0,C.Crosshair_Size)cr2.Position=UDim2.new(0.5,-1,0.5,-C.Crosshair_Size/2)
+cr1.BackgroundColor3=C.Crosshair_Color cr2.BackgroundColor3=C.Crosshair_Color cr1.Visible=C.Crosshair cr2.Visible=C.Crosshair end)
+
+local fpsFrames=0 local fpsTime=0 local fpsValue=60
+RunService.RenderStepped:Connect(function(dt)
+fpsFrames=fpsFrames+1 fpsTime=fpsTime+dt
+if fpsTime>=0.5 then fpsValue=math.floor(fpsFrames/fpsTime)fpsFrames=0 fpsTime=0 end end)
+task.spawn(function()
+while task.wait(0.5)do
+if C.Watermark then wm.Visible=true
+local parts={}
+if C.ShowFPS then table.insert(parts,"FPS: "..fpsValue)end
+if C.ShowPing then table.insert(parts,"Ping: "..math.floor(lp:GetNetworkPing()*1000).."ms")end
+if C.ShowStats then table.insert(parts,#Players:GetPlayers().." players")end
+wmStats.Text=table.concat(parts," | ")
+else wm.Visible=false end end end)
+
+local soundCache={}
+function playHit(isHead)
+if not C.SoundsEnabled then return end
+pcall(function()
+if soundCache[1]and soundCache[1].Parent then soundCache[1].TimePosition=0 soundCache[1].Volume=C.SoundsVolume/100 soundCache[1]:Play()
+else local s=Instance.new("Sound")s.SoundId="rbxassetid://6042053626"s.Volume=C.SoundsVolume/100 s.Parent=game:GetService("SoundService")s:Play()soundCache[1]=s end end)end
+UIS.InputBegan:Connect(function(i,gpe)
+if gpe then return end
+if C.SoundsEnabled and i.UserInputType==Enum.UserInputType.MouseButton1 then task.wait(0.05)
+if Drawing then local t=getClosestTarget(C.SA_FOV,"Head")playHit(t~=nil)end end end)
+UIS.InputBegan:Connect(function(i,gpe)
+if gpe then return end
+local keyName=i.KeyCode and i.KeyCode.Name or (i.UserInputType==Enum.UserInputType.MouseButton1 and "Mouse1" or i.UserInputType==Enum.UserInputType.MouseButton2 and "Mouse2" or nil)
+if keyName and keyName==C.SA_BindKey then C.SilentAim=not C.SilentAim log("SilentAim: "..tostring(C.SilentAim),C.SilentAim and COL.green or COL.red)end end)
+UIS.InputBegan:Connect(function(i,gpe)
+if gpe then return end
+local keyName=i.KeyCode and i.KeyCode.Name or (i.UserInputType==Enum.UserInputType.MouseButton1 and "Mouse1" or i.UserInputType==Enum.UserInputType.MouseButton2 and "Mouse2" or nil)
+if keyName and keyName==C.AB_Keybind then C.Aimbot=true end end)
+UIS.InputEnded:Connect(function(i)
+local keyName=i.KeyCode and i.KeyCode.Name or (i.UserInputType==Enum.UserInputType.MouseButton1 and "Mouse1" or i.UserInputType==Enum.UserInputType.MouseButton2 and "Mouse2" or nil)
+if keyName and keyName==C.AB_Keybind then C.Aimbot=false end end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(input,gameProcessed)
+if gameProcessed then return end
+if input.KeyCode==C.MenuKey then screen.Enabled=not screen.Enabled end end)
+
+pages["Combat"].Visible=true
+buttons["Combat"].TextColor3=COL.accent
+syslog("Phantom HvH v5.9 loaded",COL.accent)
+syslog("Menu: "..C.MenuKey.Name,COL.textDim)
+log("Loaded OK",COL.green)
