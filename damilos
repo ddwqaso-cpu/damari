@@ -1,6 +1,25 @@
 -- ============================================================
--- [void] MONOLITH — Combat (30) + Visual (70) + Misc (20) = 120
+-- [void] MONOLITH FIXED — Combat (30) + Visual (70) + Misc (20)
 -- ============================================================
+
+-- ЗАЩИТА ОТ ОШИБОК DRAWING API
+local hasDrawing = pcall(function() return Drawing.new("Square") end)
+local DrawingAPI = {}
+if hasDrawing then
+    DrawingAPI.new = function(t) return Drawing.new(t) end
+else
+    warn("[void] Drawing API не найден. ESP (боксы) отключен, но чамсы и логика работают.")
+    DrawingAPI.new = function(t)
+        return {
+            Visible = false, Thickness = 1, Filled = false,
+            Color = Color3.new(), Position = Vector2.new(),
+            Size = Vector2.new(), Text = "", Center = false,
+            Outline = false, From = Vector2.new(), To = Vector2.new(),
+            Radius = 0, Transparency = 1, TextBounds = Vector2.new(),
+            Remove = function() end
+        }
+    end
+end
 
 -- ============================================================
 -- COMBAT (30)
@@ -302,7 +321,7 @@ function Combat:runAutoParry()
 end
 
 -- ============================================================
--- VISUAL (70) — объединённый модуль
+-- VISUAL (70)
 -- ============================================================
 local Visual = {}
 Visual.__index = Visual
@@ -343,19 +362,19 @@ function Visual.new(env)
 end
 
 function Visual:createBox()
-    local box = Drawing.new("Square"); box.Visible=false; box.Thickness=1
+    local box = DrawingAPI.new("Square"); box.Visible=false; box.Thickness=1
     box.Filled=false; box.Color=Color3.fromRGB(255,255,255); return box
 end
 function Visual:createText(size, color)
-    local t = Drawing.new("Text"); t.Visible=false; t.Size=size or 14
+    local t = DrawingAPI.new("Text"); t.Visible=false; t.Size=size or 14
     t.Center=false; t.Outline=true; t.Color=color or Color3.fromRGB(255,255,255); return t
 end
 function Visual:createLine(color, thickness)
-    local l = Drawing.new("Line"); l.Visible=false; l.Thickness=thickness or 1
+    local l = DrawingAPI.new("Line"); l.Visible=false; l.Thickness=thickness or 1
     l.Color=color or Color3.fromRGB(255,255,255); return l
 end
 function Visual:createCircle(color, thickness, filled)
-    local c = Drawing.new("Circle"); c.Visible=false; c.Thickness=thickness or 1
+    local c = DrawingAPI.new("Circle"); c.Visible=false; c.Thickness=thickness or 1
     c.Filled=filled or false; c.Color=color or Color3.fromRGB(255,255,255); return c
 end
 
@@ -735,7 +754,7 @@ function Visual:runDOF()
 end
 
 function Visual:drawBoxAt(pos, size, color)
-    local box = Drawing.new("Square"); box.Position=pos; box.Size=size; box.Color=color
+    local box = DrawingAPI.new("Square"); box.Position=pos; box.Size=size; box.Color=color
     box.Thickness=1; box.Filled=false; box.Visible=true; return box
 end
 function Visual:drawWorldLine(from, to, color, thickness)
@@ -895,7 +914,7 @@ end
 function Visual:runScreenOverlay()
     if not self.settings.screenOverlay then return end
     if not self.overlayDrawing then
-        self.overlayDrawing = Drawing.new("Square"); self.overlayDrawing.Filled = true
+        self.overlayDrawing = DrawingAPI.new("Square"); self.overlayDrawing.Filled = true
         self.overlayDrawing.Color = self.settings.overlayColor or Color3.fromRGB(0,0,0)
         self.overlayDrawing.Transparency = self.settings.overlayTransparency or 0.8
     end
